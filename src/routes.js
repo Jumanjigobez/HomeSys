@@ -22,7 +22,7 @@ const MainRoutes = () =>{
     <>
     <BrowserRouter basename="/homesys">
       <Routes>
-        <Route path='/homesys' exact Component={Login}/>
+        <Route path='/' exact Component={Login}/>
        
         <Route path={LoggedIn ? '/home':'/'} exact Component={LoggedIn ? Home:Login}/>
     

@@ -8,9 +8,10 @@ Welcome to HomeSys, your all-in-one personal management system designed to help 
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
-- [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
+- [Author](#author)
+- [Contact](#contact)
 
 ## Introduction
 
@@ -57,12 +58,54 @@ HomeSys is a comprehensive web-based personal management system that combines es
 
 - Node.js
 - npm (Node Package Manager)
-- PHP
-- MySQL database
+- XAMPP (or any similar stack with PHP and MySQL)
 
-### Installation
+## Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/homesys.git
+   git clone https://github.com/jumanjigobez/homesys.git
+   ```
 
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+   - Ensure XAMPP is installed and running at port 8080.
+
+3. Configure the database:
+   - Open XAMPP and start the Apache and MySQL     services.
+   - Create a new MySQL database for HomeSys.
+   - Import the SQL file located at PHP/homesys.sql into your newly created database.
+
+4. Update backend configuration:
+   - Open PHP/config.php and update the database credentials if needed.
+
+5. Start the application:
+   ```bash
+   npm start
+   ```
+   - Ensure XAMPP's Apache server is still running.
+
+6. Open your browser and go to http://localhost:3000 to use HomeSys.
+
+## Screenshots
+
+
+## Contributing
+Contributions are welcome! If you have any ideas for improvements, bug fixes, or new features, please open an issue or submit a pull request.
+
+## License
+This project is licensed under the MIT License. Feel free to use, modify, and distribute it according to the terms of the license.
+
+## Author
+
+- Name - Juma Chaje
+- Portfolio Page - (Jumanjigobez)[https://jumanjigobez.github.io/personal_portfolio]
+- Instagram Page - (@Jumanjicasilas)[https://instagram.com/jumanjicasilas]
+- Youtube Channel - (@Jumanji_Dev)[https://youtube.com/jumanji_dev]
+
+## Contact
+For any inquiries or support, please contact [jumagobe3@gmail.com]
+
+Thank you for the Star and choosing HomeSys! I hope it helps you manage and enhance every aspect of your life effectively. 😎👌

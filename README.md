@@ -90,6 +90,11 @@ HomeSys is a comprehensive web-based personal management system that combines es
 6. Open your browser and go to http://localhost:3000 to use HomeSys.
 
 ## Screenshots
+![login page](https://github.com/Jumanjigobez/HomeSys/assets/73429193/96f525bf-135a-48d7-89a5-bde9cea9eaaa)
+![Home Page](https://github.com/Jumanjigobez/HomeSys/assets/73429193/c7a7c668-0467-4f14-94e7-b6dd8a960e28)
+![projects page](https://github.com/Jumanjigobez/HomeSys/assets/73429193/d647cf7d-fc4d-4894-9878-fa0ba08b5c29)
+
+![responsive](https://github.com/Jumanjigobez/HomeSys/assets/73429193/5166b7a0-39a7-469c-8d45-cdc59eb13c74)
 
 
 ## Contributing
@@ -101,11 +106,11 @@ This project is licensed under the MIT License. Feel free to use, modify, and di
 ## Author
 
 - Name - Juma Chaje
-- Portfolio Page - (Jumanjigobez)[https://jumanjigobez.github.io/personal_portfolio]
-- Instagram Page - (@Jumanjicasilas)[https://instagram.com/jumanjicasilas]
-- Youtube Channel - (@Jumanji_Dev)[https://youtube.com/jumanji_dev]
+- Portfolio Page - [Jumanjigobez](https://jumanjigobez.github.io/personal_portfolio)
+- Instagram Page - [@Jumanjicasilas](https://instagram.com/jumanjicasilas)
+- Youtube Channel - [@Jumanji_Dev](https://youtube.com/jumanji_dev)
 
 ## Contact
-For any inquiries or support, please contact [jumagobe3@gmail.com]
+For any inquiries or support, please contact [Email Now](jumagobe3@gmail.com)
 
 Thank you for the Star and choosing HomeSys! I hope it helps you manage and enhance every aspect of your life effectively. 😎👌

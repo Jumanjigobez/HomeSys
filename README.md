@@ -106,11 +106,11 @@ This project is licensed under the MIT License. Feel free to use, modify, and di
 ## Author
 
 - Name - Juma Chaje
-- Portfolio Page - (Jumanjigobez)[https://jumanjigobez.github.io/personal_portfolio]
-- Instagram Page - (@Jumanjicasilas)[https://instagram.com/jumanjicasilas]
-- Youtube Channel - (@Jumanji_Dev)[https://youtube.com/jumanji_dev]
+- Portfolio Page - [Jumanjigobez](https://jumanjigobez.github.io/personal_portfolio)
+- Instagram Page - [@Jumanjicasilas](https://instagram.com/jumanjicasilas)
+- Youtube Channel - [@Jumanji_Dev](https://youtube.com/jumanji_dev)
 
 ## Contact
-For any inquiries or support, please contact [jumagobe3@gmail.com]
+For any inquiries or support, please contact [Email Now](jumagobe3@gmail.com)
 
 Thank you for the Star and choosing HomeSys! I hope it helps you manage and enhance every aspect of your life effectively. 😎👌

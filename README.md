@@ -108,7 +108,7 @@ This project is licensed under the MIT License. Feel free to use, modify, and di
 - Name - Juma Chaje
 - Portfolio Page - [Jumanjigobez](https://jumanjigobez.github.io/personal_portfolio)
 - Instagram Page - [@Jumanjicasilas](https://instagram.com/jumanjicasilas)
-- Youtube Channel - [@Jumanji_Dev](https://youtube.com/jumanji_dev)
+- Youtube Channel - [@Jumanji_Dev](https://youtube.com/@jumanji_dev)
 
 ## Contact
 For any inquiries or support, please contact [Email Now](jumagobe3@gmail.com)

@@ -20,7 +20,7 @@ const MainRoutes = () =>{
       JSON.parse(localStorage.getItem("sessions")).username!==""? true : false
   return(
     <>
-    <BrowserRouter basename="/homesys">
+    <BrowserRouter>
       <Routes>
         <Route path='/' exact element={Login}/>
        

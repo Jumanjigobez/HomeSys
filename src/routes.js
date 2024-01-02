@@ -15,7 +15,7 @@ import Payments from './components/payments';
 import Events from './components/events';
 
 const MainRoutes = () =>{
-  / Check if user is already logged in to route to the required page
+  // Check if user is already logged in to route to the required page
   const sessionsData = localStorage.getItem("sessions");
   
   // Check if localStorage and sessionsData are truthy

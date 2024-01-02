@@ -19,7 +19,7 @@ const MainRoutes = () =>{
   const sessionsData = localStorage.getItem("sessions");
   
   // Check if localStorage and sessionsData are truthy
-  const isLoggedIn = localStorage && sessionsData && sessionsData !== "null" 
+  const LoggedIn = localStorage && sessionsData && sessionsData !== "null" 
     ? JSON.parse(sessionsData).username !== "" 
     : false;
 

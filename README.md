@@ -1,6 +1,6 @@
 # HomeSys - Personal Management System
 
-Welcome to HomeSys, your all-in-one personal management system designed to help you organize and enhance various aspects of your life.
+Welcome to HomeSys, your all-in-one personal management system designed to help you organize and enhance various aspects of your life. View Live Now -> [Live Link](https://homesys.000webhostapp.com/)
 
 ## Table of Contents
 

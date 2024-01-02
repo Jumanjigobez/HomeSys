@@ -15,9 +15,10 @@ import Payments from './components/payments';
 import Events from './components/events';
 
 const MainRoutes = () =>{
-  //Check if user already logged in inorder to route to required page
-  const LoggedIn = localStorage.length!==0 && 
-      JSON.parse(localStorage.getItem("sessions")).username!==""? true : false
+  // Check if user already logged in inorder to route to required page
+  const sessionsData = JSON.parse(localStorage.getItem("sessions"));
+  const LoggedIn = sessionsData && sessionsData.username !== "" ? true : false;
+
   return(
     <>
     <BrowserRouter>

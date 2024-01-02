@@ -77,7 +77,7 @@ const Personal_Timetable = () => {
     axios({
       //Insert new blank data in the database
       method: "post",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/personalTimetable.php",
+      url: "http://localhost:80/homesys/PHP/personalTimetable.php",
       data: formData,
       config: {
         headers: {
@@ -161,7 +161,7 @@ const Personal_Timetable = () => {
     axios({
       //Update the new task and status in the database
       method: "post",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/personalTimetable/editPersonalTimetable.php",
+      url: "http://localhost:80/homesys/PHP/personalTimetable/editPersonalTimetable.php",
       data: formData,
       config: {
         headers: {
@@ -202,7 +202,7 @@ const Personal_Timetable = () => {
     axios({
       //Delete the row in the database
       method: "get",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/personalTimetable/deletePersonalTimetable.php",
+      url: "http://localhost:80/homesys/PHP/personalTimetable/deletePersonalTimetable.php",
       params: { id: row_Id },
       withCredentials: false,
     })
@@ -238,7 +238,7 @@ const Personal_Timetable = () => {
 
     axios({
       method: "get",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/personalTimetable/getPersonalTimetable.php",
+      url: "http://localhost:80/homesys/PHP/personalTimetable/getPersonalTimetable.php",
     })
       .then((response) => {
         setTimetableData(response.data);

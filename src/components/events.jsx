@@ -51,7 +51,7 @@ const Events = () => {
 
       axios({
         method: "post",
-        url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/events/eventSearch.php",
+        url: "http://localhost:80/homesys/PHP/events/eventSearch.php",
         data: formData,
         config: {
           headers: {
@@ -68,7 +68,7 @@ const Events = () => {
     } else {
       axios({
         method: "get",
-        url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/Events/getEvents.php",
+        url: "http://localhost:80/homesys/PHP/Events/getEvents.php",
       })
         .then((response) => {
           setEventsData(response.data);
@@ -91,7 +91,7 @@ const Events = () => {
     axios({
       //Insert new blank data in the database
       method: "post",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/events.php",
+      url: "http://localhost:80/homesys/PHP/events.php",
       data: formData,
       config: {
         headers: {
@@ -169,7 +169,7 @@ const Events = () => {
     axios({
       //Update the new task and status in the database
       method: "post",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/events/editEvents.php",
+      url: "http://localhost:80/homesys/PHP/events/editEvents.php",
       data: formData,
       config: {
         headers: {
@@ -210,7 +210,7 @@ const Events = () => {
     axios({
       //Delete the row in the database
       method: "get",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/events/deleteEvents.php",
+      url: "http://localhost:80/homesys/PHP/events/deleteEvents.php",
       params: { id: row_id },
       withCredentials: false,
     })
@@ -246,7 +246,7 @@ const Events = () => {
 
     axios({
       method: "get",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/events/getEvents.php",
+      url: "http://localhost:80/homesys/PHP/events/getEvents.php",
     })
       .then((response) => {
         setEventsData(response.data);

@@ -50,7 +50,7 @@ const Projects = () => {
 
       axios({
         method: "post",
-        url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/projects/projectSearch.php",
+        url: "http://localhost:80/homesys/PHP/projects/projectSearch.php",
         data: formData,
         config: {
           headers: {
@@ -67,7 +67,7 @@ const Projects = () => {
     } else {
       axios({
         method: "get",
-        url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/projects/getProjects.php",
+        url: "http://localhost:80/homesys/PHP/projects/getProjects.php",
       })
         .then((response) => {
           setProjectsData(response.data);
@@ -121,7 +121,7 @@ const Projects = () => {
     axios({
       //Insert new blank data in the database
       method: "post",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/projects.php",
+      url: "http://localhost:80/homesys/PHP/projects.php",
       data: formData,
       config: {
         headers: {
@@ -170,7 +170,7 @@ const Projects = () => {
     axios({
       //Update the new task and status in the database
       method: "post",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/projects/editProjects.php",
+      url: "http://localhost:80/homesys/PHP/projects/editProjects.php",
       data: formData,
       config: {
         headers: {
@@ -211,7 +211,7 @@ const Projects = () => {
     axios({
       //Delete the row in the database
       method: "get",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/projects/deleteProjects.php",
+      url: "http://localhost:80/homesys/PHP/projects/deleteProjects.php",
       params: { id: row_id },
       withCredentials: false,
     })
@@ -246,7 +246,7 @@ const Projects = () => {
 
     axios({
       method: "get",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/projects/getProjects.php",
+      url: "http://localhost:80/homesys/PHP/projects/getProjects.php",
     })
       .then((response) => {
         setProjectsData(response.data);

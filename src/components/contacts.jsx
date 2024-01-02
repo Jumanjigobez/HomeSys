@@ -49,7 +49,7 @@ const Contacts = () => {
 
       axios({
         method: "post",
-        url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/contacts/contactSearch.php",
+        url: "http://localhost:80/homesys/PHP/contacts/contactSearch.php",
         data: formData,
         config: {
           headers: {
@@ -66,7 +66,7 @@ const Contacts = () => {
     } else {
       axios({
         method: "get",
-        url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/contacts/getContacts.php",
+        url: "http://localhost:80/homesys/PHP/contacts/getContacts.php",
       })
         .then((response) => {
           setContactsData(response.data);
@@ -88,7 +88,7 @@ const Contacts = () => {
     axios({
       //Insert new blank data in the database
       method: "post",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/contacts.php",
+      url: "http://localhost:80/homesys/PHP/contacts.php",
       data: formData,
       config: {
         headers: {
@@ -164,7 +164,7 @@ const Contacts = () => {
     axios({
       //Update the new task and status in the database
       method: "post",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/contacts/editContacts.php",
+      url: "http://localhost:80/homesys/PHP/contacts/editContacts.php",
       data: formData,
       config: {
         headers: {
@@ -205,7 +205,7 @@ const Contacts = () => {
     axios({
       //Delete the row in the database
       method: "get",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/contacts/deleteContacts.php",
+      url: "http://localhost:80/homesys/PHP/contacts/deleteContacts.php",
       params: { id: row_id },
       withCredentials: false,
     })
@@ -241,7 +241,7 @@ const Contacts = () => {
 
     axios({
       method: "get",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/contacts/getContacts.php",
+      url: "http://localhost:80/homesys/PHP/contacts/getContacts.php",
     })
       .then((response) => {
         setContactsData(response.data);

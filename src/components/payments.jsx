@@ -51,7 +51,7 @@ const Payments = () => {
 
       axios({
         method: "post",
-        url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/payments/paymentSearch.php",
+        url: "http://localhost:80/homesys/PHP/payments/paymentSearch.php",
         data: formData,
         config: {
           headers: {
@@ -68,7 +68,7 @@ const Payments = () => {
     } else {
       axios({
         method: "get",
-        url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/payments/getPayments.php",
+        url: "http://localhost:80/homesys/PHP/payments/getPayments.php",
       })
         .then((response) => {
           setPaymentsData(response.data);
@@ -91,7 +91,7 @@ const Payments = () => {
     axios({
       //Insert new blank data in the database
       method: "post",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/payments.php",
+      url: "http://localhost:80/homesys/PHP/payments.php",
       data: formData,
       config: {
         headers: {
@@ -169,7 +169,7 @@ const Payments = () => {
     axios({
       //Update the new task and status in the database
       method: "post",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/payments/editPayments.php",
+      url: "http://localhost:80/homesys/PHP/payments/editPayments.php",
       data: formData,
       config: {
         headers: {
@@ -210,7 +210,7 @@ const Payments = () => {
     axios({
       //Delete the row in the database
       method: "get",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/payments/deletePayments.php",
+      url: "http://localhost:80/homesys/PHP/payments/deletePayments.php",
       params: { id: row_id },
       withCredentials: false,
     })
@@ -246,7 +246,7 @@ const Payments = () => {
 
     axios({
       method: "get",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/payments/getPayments.php",
+      url: "http://localhost:80/homesys/PHP/payments/getPayments.php",
     })
       .then((response) => {
         setPaymentsData(response.data);

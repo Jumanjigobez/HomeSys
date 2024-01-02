@@ -92,7 +92,7 @@ const Login = () => {
 
     handleLogin();
 
-    let api_url = "http://localhost:8080/Homesys%20v1.0/homesys/PHP/login.php";
+    let api_url = "http://localhost:80/homesys/PHP/login.php";
     let formData = new FormData();
     formData.append("username", username_ref.current.value);
     formData.append("password", psk_ref.current.value);
@@ -171,7 +171,7 @@ const Login = () => {
     <div id="login_form">
       <div className="logo_part">
         <div className="logo">
-          <img src="../images/logo.png" alt="Homesys Logo" />
+          <img src="/homesys/images/logo.png" alt="Homesys Logo" />
         </div>
 
         <div className="title_part">

@@ -51,7 +51,7 @@ const Appointments = () => {
 
       axios({
         method: "post",
-        url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/appointments/appointmentSearch.php",
+        url: "http://localhost:80/homesys/PHP/appointments/appointmentSearch.php",
         data: formData,
         config: {
           headers: {
@@ -68,7 +68,7 @@ const Appointments = () => {
     } else {
       axios({
         method: "get",
-        url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/appointments/getAppointments.php",
+        url: "http://localhost:80/homesys/PHP/appointments/getAppointments.php",
       })
         .then((response) => {
           setAppointmentsData(response.data);
@@ -91,7 +91,7 @@ const Appointments = () => {
     axios({
       //Insert new blank data in the database
       method: "post",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/appointments.php",
+      url: "http://localhost:80/homesys/PHP/appointments.php",
       data: formData,
       config: {
         headers: {
@@ -169,7 +169,7 @@ const Appointments = () => {
     axios({
       //Update the new task and status in the database
       method: "post",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/appointments/editAppointments.php",
+      url: "http://localhost:80/homesys/PHP/appointments/editAppointments.php",
       data: formData,
       config: {
         headers: {
@@ -210,7 +210,7 @@ const Appointments = () => {
     axios({
       //Delete the row in the database
       method: "get",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/appointments/deleteAppointments.php",
+      url: "http://localhost:80/homesys/PHP/appointments/deleteAppointments.php",
       params: { id: row_id },
       withCredentials: false,
     })
@@ -246,7 +246,7 @@ const Appointments = () => {
 
     axios({
       method: "get",
-      url: "http://localhost:8080/Homesys%20v1.0/homesys/PHP/appointments/getAppointments.php",
+      url: "http://localhost:80/homesys/PHP/appointments/getAppointments.php",
     })
       .then((response) => {
         setAppointmentsData(response.data);

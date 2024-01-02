@@ -22,21 +22,21 @@ const MainRoutes = () =>{
     <>
     <BrowserRouter>
       <Routes>
-        <Route path='/' exact element={Login}/>
+        <Route path='/' exact Component={Login}/>
        
-        <Route path={LoggedIn ? '/home':'/'} exact element={LoggedIn ? Home:Login}/>
+        <Route path={LoggedIn ? '/home':'/'} exact Component={LoggedIn ? Home:Login}/>
     
-        <Route path={LoggedIn ? '/todo':'/'} exact element={LoggedIn ? Todo:Login}/>
-        <Route path={LoggedIn ? '/timetables':'/'} exact element={LoggedIn ? Timetables:Login}/>
-        <Route path={LoggedIn ? '/timetables/personal':'/'} exact element={LoggedIn ? Personal_Timetable:Login}/>
-        <Route path={LoggedIn ? '/timetables/class':'/'} exact element={LoggedIn ? Class_Timetable:Login}/>
-        <Route path={LoggedIn ? '/projects':'/'} exact element={LoggedIn ? Projects:Login}/>
-        <Route path={LoggedIn ? '/contacts':'/'} exact element={LoggedIn ? Contacts:Login}/>
-        <Route path={LoggedIn ? '/appointments':'/'} exact element={LoggedIn ? Appointments:Login}/>
-        <Route path={LoggedIn ? '/payments':'/'} exact element={LoggedIn ? Payments:Login}/>
-        <Route path={LoggedIn ? '/events':'/'} exact element={LoggedIn ? Events:Login}/>
+        <Route path={LoggedIn ? '/todo':'/'} exact Component={LoggedIn ? Todo:Login}/>
+        <Route path={LoggedIn ? '/timetables':'/'} exact Component={LoggedIn ? Timetables:Login}/>
+        <Route path={LoggedIn ? '/timetables/personal':'/'} exact Component={LoggedIn ? Personal_Timetable:Login}/>
+        <Route path={LoggedIn ? '/timetables/class':'/'} exact Component={LoggedIn ? Class_Timetable:Login}/>
+        <Route path={LoggedIn ? '/projects':'/'} exact Component={LoggedIn ? Projects:Login}/>
+        <Route path={LoggedIn ? '/contacts':'/'} exact Component={LoggedIn ? Contacts:Login}/>
+        <Route path={LoggedIn ? '/appointments':'/'} exact Component={LoggedIn ? Appointments:Login}/>
+        <Route path={LoggedIn ? '/payments':'/'} exact Component={LoggedIn ? Payments:Login}/>
+        <Route path={LoggedIn ? '/events':'/'} exact Component={LoggedIn ? Events:Login}/>
         
-        <Route path='*' element={Login}/>
+        <Route path='*' Component={Login}/>
       </Routes>
     </BrowserRouter>
     

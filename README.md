@@ -71,7 +71,7 @@ HomeSys is a comprehensive web-based personal management system that combines es
    ```bash
    npm install
    ```
-   - Ensure XAMPP is installed and running at port 8080.
+   - Ensure XAMPP is installed and appache is running at port default 80.
 
 3. Configure the database:
    - Open XAMPP and start the Apache and MySQL     services.

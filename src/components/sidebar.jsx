@@ -9,7 +9,7 @@ const Sidebar = () => {
   return (
     <div className={menuOpened ? "sidebar" : "sidebar closed"}>
       <div className="logo_part">
-        <img src="homesys/images/logo.png" alt="H" />
+        <img src="../images/logo.png" alt="H" />
       </div>
 
       <div className="menu_part">

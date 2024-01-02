@@ -171,7 +171,7 @@ const Login = () => {
     <div id="login_form">
       <div className="logo_part">
         <div className="logo">
-          <img src="/homesys/images/logo.png" alt="Homesys Logo" />
+          <img src="../images/logo.png" alt="Homesys Logo" />
         </div>
 
         <div className="title_part">

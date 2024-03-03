@@ -4,19 +4,20 @@
 
     $Name = $_POST['Name'];
     $Address = $_POST['Address'];
-    $Phone = $_POST['Phone'];
+    $Contacts = $_POST['Contacts'];
     $Date = $_POST['Date'];
     $Type = $_POST['Type'];
     $Status = $_POST['Status'];
     
 
-    if(!empty($Name)&&!empty($Address)&&!empty($Phone)&&!empty($Date)&&!empty($Type)&&!empty($Status)){
+    if(!empty($Name)&&!empty($Address)&&!empty($Contacts)&&!empty($Date)&&!empty($Type)&&!empty($Status)){
+        $DateValue = ($Date !== ' ') ? $Date : " ";
         $query = $conn->prepare("INSERT INTO appointments (
-            Name, Address, Phone, Date, Type, Status
+            Name, Address, Contacts, Date, Type, Status
             ) VALUES (?, ?, ?, ?, ?, ?)");
 
         $query->bind_param("ssssss",
-        $Name, $Address, $Phone, $Date, $Type, $Status);
+        $Name, $Address, $Contacts, $DateValue, $Type, $Status);
 
         $query->execute();//Execute the query
 

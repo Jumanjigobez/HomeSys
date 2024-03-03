@@ -16,7 +16,7 @@
             'id' => $row['id'],
             'Name' => $row['Name'],
             'Address' => $row['Address'],
-            'Phone' => $row['Phone'],
+            'Contacts' => $row['Contacts'],
             'Date' => $row['Date'],
             'Type' => $row['Type'],
             'Status' => $row['Status'],

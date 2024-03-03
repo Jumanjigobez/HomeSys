@@ -11,12 +11,13 @@
     
 
     if(!empty($Name)&&!empty($Venue)&&!empty($Date)&&!empty($Contact)&&!empty($Type)&&!empty($Status)){
+        $DateValue = ($Date !== ' ') ? $Date : null;
         $query = $conn->prepare("INSERT INTO events (
             Name, Venue, Date, Contact, Type, Status
             ) VALUES (?, ?, ?, ?, ?, ?)");
 
         $query->bind_param("ssssss",
-        $Name, $Venue, $Date, $Contact, $Type, $Status);
+        $Name, $Venue, $DateValue, $Contact, $Type, $Status);
 
         $query->execute();//Execute the query
 

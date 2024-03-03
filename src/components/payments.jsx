@@ -51,7 +51,7 @@ const Payments = () => {
 
       axios({
         method: "post",
-        url: "http://localhost:80/homesys/PHP/payments/paymentSearch.php",
+        url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/payments/paymentSearch.php",
         data: formData,
         config: {
           headers: {
@@ -68,7 +68,7 @@ const Payments = () => {
     } else {
       axios({
         method: "get",
-        url: "http://localhost:80/homesys/PHP/payments/getPayments.php",
+        url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/payments/getPayments.php",
       })
         .then((response) => {
           setPaymentsData(response.data);
@@ -79,49 +79,13 @@ const Payments = () => {
     }
   };
 
-  const handleAddRow = () => {
-    let formData = new FormData();
-    formData.append("TransCode", " ");
-    formData.append("AccNo", " ");
-    formData.append("AccName", " ");
-    formData.append("Amount", " ");
-    formData.append("Date", " ");
-    formData.append("Type", " ");
+  const openDialogAdd = () => {
+    setDialogFields({
+      dialogTitle: "Add",
+    });
 
-    axios({
-      //Insert new blank data in the database
-      method: "post",
-      url: "http://localhost:80/homesys/PHP/payments.php",
-      data: formData,
-      config: {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      },
-    })
-      .then((response) => {
-        if (response.data == 1) {
-          toast.success("Added Row successfully", {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 1000,
-          });
-
-          setPaymentsUpdate((prevState) => {
-            return {
-              ...prevState,
-              updated: prevState.updated + 1,
-            };
-          });
-        } else {
-          toast.error("Oops, Something's wrong :(", {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 1000,
-          });
-        }
-      })
-      .catch((e) => {
-        alert("Network Error", e);
-      });
+    setDialogType("add");
+    setIsDialogOpen(true);
   };
 
   const openDialogPayment = (type, e) => {
@@ -154,6 +118,54 @@ const Payments = () => {
     }
   };
 
+  const handleAddPayments = (e) => {
+    e.preventDefault();
+    let formData = new FormData();
+
+    formData.append("TransCode", TransCode_input.current.value);
+    formData.append("AccNo", AccNo_input.current.value);
+    formData.append("AccName", AccName_input.current.value);
+    formData.append("Amount", Amount_input.current.value);
+    formData.append("Date", Date_input.current.value);
+    formData.append("Type", Type_input.current.value);
+
+    axios({
+      //Update the new task and status in the database
+      method: "post",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/payments.php",
+      data: formData,
+      config: {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    })
+      .then((response) => {
+        if (response.data == 1) {
+          toast.success("Added successfully", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+
+          setPaymentsUpdate((prevState) => {
+            return {
+              ...prevState,
+              updated: prevState.updated + 1,
+            };
+          });
+        } else {
+          toast.error("Oops, Something's wrong :(", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+        }
+      })
+      .catch((e) => {
+        alert("Network Error", e);
+      });
+
+    setIsDialogOpen(false);
+  };
   const handleUpdatePayments = (e, row_id) => {
     e.preventDefault();
     let formData = new FormData();
@@ -169,7 +181,7 @@ const Payments = () => {
     axios({
       //Update the new task and status in the database
       method: "post",
-      url: "http://localhost:80/homesys/PHP/payments/editPayments.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/payments/editPayments.php",
       data: formData,
       config: {
         headers: {
@@ -210,7 +222,7 @@ const Payments = () => {
     axios({
       //Delete the row in the database
       method: "get",
-      url: "http://localhost:80/homesys/PHP/payments/deletePayments.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/payments/deletePayments.php",
       params: { id: row_id },
       withCredentials: false,
     })
@@ -246,7 +258,7 @@ const Payments = () => {
 
     axios({
       method: "get",
-      url: "http://localhost:80/homesys/PHP/payments/getPayments.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/payments/getPayments.php",
     })
       .then((response) => {
         setPaymentsData(response.data);
@@ -359,7 +371,7 @@ const Payments = () => {
                     ) : (
                       <tr>
                         <td className="not_found" colSpan={9}>
-                          No Payments Found! Please Add Row and Edit
+                          No Payments Found! Please Add Row
                         </td>
                       </tr>
                     )}
@@ -388,7 +400,7 @@ const Payments = () => {
               </div>
 
               <div className="button_part">
-                <button className="btn" onClick={handleAddRow}>
+                <button className="btn" onClick={openDialogAdd}>
                   Add Row
                 </button>
               </div>
@@ -422,12 +434,12 @@ const Payments = () => {
                 >
                   <div className="part_1">
                     <div className="input_group">
-                      <label htmlFor="TransCode">Ref. No.</label>
+                      <label htmlFor="TransCode">Trans. Code</label>
                       <input
                         type="text"
                         name="TransCode"
                         id="TransCode"
-                        placeholder="Reference No."
+                        placeholder="Transaction Code"
                         defaultValue={dialogFields.TransCode}
                         ref={TransCode_input}
                         required
@@ -511,6 +523,106 @@ const Payments = () => {
                     <div className="input_group">
                       <button type="submit" className="btn">
                         Update
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              ) : dialogType === "add" ? (
+                <form
+                  className="dialog_form"
+                  onSubmit={(e) => handleAddPayments(e)}
+                >
+                  <div className="part_1">
+                    <div className="input_group">
+                      <label htmlFor="TransCode">Trans. Code</label>
+                      <input
+                        type="text"
+                        name="TransCode"
+                        id="TransCode"
+                        placeholder="Transaction Code"
+                        defaultValue={dialogFields.TransCode}
+                        ref={TransCode_input}
+                        required
+                      />
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="accno">Acc. No.</label>
+                      <input
+                        type="text"
+                        name="accno"
+                        id="accno"
+                        placeholder="Account No."
+                        defaultValue={dialogFields.AccNo}
+                        ref={AccNo_input}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="part_2">
+                    <div className="input_group">
+                      <label htmlFor="accname">Acc. Name</label>
+                      <input
+                        type="text"
+                        name="accname"
+                        id="accname"
+                        placeholder="Account Name"
+                        defaultValue={dialogFields.AccName}
+                        ref={AccName_input}
+                        required
+                      />
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="amount">Amount</label>
+                      <input
+                        type="amount"
+                        name="amount"
+                        id="amount"
+                        placeholder="Amount"
+                        defaultValue={dialogFields.Amount}
+                        ref={Amount_input}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="part_3">
+                    <div className="input_group">
+                      <label htmlFor="date">Date</label>
+                      <input
+                        type="date"
+                        name="date"
+                        id="date"
+                        placeholder="Date"
+                        defaultValue={dialogFields.Date}
+                        ref={Date_input}
+                        required
+                      />
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="type">Payment Type</label>
+                      <div className="custom_select">
+                        <select
+                          name="type"
+                          id="type"
+                          defaultValue={dialogFields.Type}
+                          required
+                          ref={Type_input}
+                        >
+                          <option value="Sent">Sent</option>
+                          <option value="Received">Received</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="part_4">
+                    <div className="input_group">
+                      <button type="submit" className="btn">
+                        Add
                       </button>
                     </div>
                   </div>

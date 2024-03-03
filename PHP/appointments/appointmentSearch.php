@@ -7,7 +7,7 @@
     $query = $conn->prepare("SELECT * FROM appointments where 
         Name like '%{$term}%' OR
         Address like '%{$term}%' OR
-        Phone like '%{$term}%' OR
+        Contacts like '%{$term}%' OR
         Date like '%{$term}%' OR
         Type like '%{$term}%' OR
         Status like '%{$term}%'
@@ -26,7 +26,7 @@
             'id' => $row['id'],
             'Name' => $row['Name'],
             'Address' => $row['Address'],
-            'Phone' => $row['Phone'],
+            'Contacts' => $row['Contacts'],
             'Date' => $row['Date'],
             'Type' => $row['Type'],
             'Status' => $row['Status'],

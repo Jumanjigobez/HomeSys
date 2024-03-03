@@ -40,7 +40,7 @@ const Todo = () => {
     e.preventDefault();
 
     let Todo_val = Todo.current.value,
-      api_url = "http://localhost:80/homesys/PHP/todo.php",
+      api_url = "http://localhost:8080/HOMESYS V1.0/homesys/PHP/todo.php",
       formData = new FormData();
 
     formData.append("Todo", Todo_val);
@@ -93,7 +93,7 @@ const Todo = () => {
     axios({
       //Update the status in the database
       method: "get",
-      url: "http://localhost:80/homesys/PHP/todo/markTodos.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/todo/markTodos.php",
       params: { id: task_id },
       withCredentials: false,
     })
@@ -161,7 +161,7 @@ const Todo = () => {
     axios({
       //Update the new task and status in the database
       method: "post",
-      url: "http://localhost:80/homesys/PHP/todo/updateTodos.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/todo/updateTodos.php",
       data: formData,
       config: {
         headers: {
@@ -202,7 +202,7 @@ const Todo = () => {
     axios({
       //Delete the task in the database
       method: "get",
-      url: "http://localhost:80/homesys/PHP/todo/deleteTodos.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/todo/deleteTodos.php",
       params: { id: task_id },
       withCredentials: false,
     })
@@ -237,7 +237,7 @@ const Todo = () => {
 
     axios({
       method: "get",
-      url: "http://localhost:80/homesys/PHP/todo/getTodos.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/todo/getTodos.php",
     })
       .then((response) => {
         setTableData(response.data);

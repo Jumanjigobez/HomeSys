@@ -49,7 +49,7 @@ const Contacts = () => {
 
       axios({
         method: "post",
-        url: "http://localhost:80/homesys/PHP/contacts/contactSearch.php",
+        url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/contacts/contactSearch.php",
         data: formData,
         config: {
           headers: {
@@ -66,7 +66,7 @@ const Contacts = () => {
     } else {
       axios({
         method: "get",
-        url: "http://localhost:80/homesys/PHP/contacts/getContacts.php",
+        url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/contacts/getContacts.php",
       })
         .then((response) => {
           setContactsData(response.data);
@@ -77,48 +77,13 @@ const Contacts = () => {
     }
   };
 
-  const handleAddRow = () => {
-    let formData = new FormData();
-    formData.append("Name", " ");
-    formData.append("Address", " ");
-    formData.append("Phone", " ");
-    formData.append("Email", " ");
-    formData.append("Type", " ");
+  const openDialogAdd = () => {
+    setDialogFields({
+      dialogTitle: "Add",
+    });
 
-    axios({
-      //Insert new blank data in the database
-      method: "post",
-      url: "http://localhost:80/homesys/PHP/contacts.php",
-      data: formData,
-      config: {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      },
-    })
-      .then((response) => {
-        if (response.data == 1) {
-          toast.success("Added Row successfully", {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 1000,
-          });
-
-          setContactsUpdate((prevState) => {
-            return {
-              ...prevState,
-              updated: prevState.updated + 1,
-            };
-          });
-        } else {
-          toast.error("Oops, Something's wrong :(", {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 1000,
-          });
-        }
-      })
-      .catch((e) => {
-        alert("Network Error", e);
-      });
+    setDialogType("add");
+    setIsDialogOpen(true);
   };
 
   const openDialogContact = (type, e) => {
@@ -150,6 +115,53 @@ const Contacts = () => {
     }
   };
 
+  const handleAddContacts = (e) => {
+    e.preventDefault();
+    let formData = new FormData();
+
+    formData.append("Name", Name_input.current.value);
+    formData.append("Address", Address_input.current.value);
+    formData.append("Phone", Phone_input.current.value);
+    formData.append("Email", Email_input.current.value);
+    formData.append("Type", Type_input.current.value);
+
+    axios({
+      //Update the new task and status in the database
+      method: "post",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/contacts.php",
+      data: formData,
+      config: {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    })
+      .then((response) => {
+        if (response.data == 1) {
+          toast.success("Added successfully", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+
+          setContactsUpdate((prevState) => {
+            return {
+              ...prevState,
+              updated: prevState.updated + 1,
+            };
+          });
+        } else {
+          toast.error("Oops, Something's wrong :(", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+        }
+      })
+      .catch((e) => {
+        alert("Network Error", e);
+      });
+
+    setIsDialogOpen(false);
+  };
   const handleUpdateContacts = (e, row_id) => {
     e.preventDefault();
     let formData = new FormData();
@@ -164,7 +176,7 @@ const Contacts = () => {
     axios({
       //Update the new task and status in the database
       method: "post",
-      url: "http://localhost:80/homesys/PHP/contacts/editContacts.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/contacts/editContacts.php",
       data: formData,
       config: {
         headers: {
@@ -205,7 +217,7 @@ const Contacts = () => {
     axios({
       //Delete the row in the database
       method: "get",
-      url: "http://localhost:80/homesys/PHP/contacts/deleteContacts.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/contacts/deleteContacts.php",
       params: { id: row_id },
       withCredentials: false,
     })
@@ -241,7 +253,7 @@ const Contacts = () => {
 
     axios({
       method: "get",
-      url: "http://localhost:80/homesys/PHP/contacts/getContacts.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/contacts/getContacts.php",
     })
       .then((response) => {
         setContactsData(response.data);
@@ -349,7 +361,7 @@ const Contacts = () => {
                     ) : (
                       <tr>
                         <td className="not_found" colSpan={8}>
-                          No Contacts Found! Please Add Row and Edit
+                          No Contacts Found! Please Add Row
                         </td>
                       </tr>
                     )}
@@ -366,7 +378,7 @@ const Contacts = () => {
               </div>
 
               <div className="button_part">
-                <button className="btn" onClick={handleAddRow}>
+                <button className="btn" onClick={openDialogAdd}>
                   Add Row
                 </button>
               </div>
@@ -480,6 +492,96 @@ const Contacts = () => {
                     <div className="input_group">
                       <button type="submit" className="btn">
                         Update
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              ) : dialogType === "add" ? (
+                <form
+                  className="dialog_form"
+                  onSubmit={(e) => handleAddContacts(e)}
+                >
+                  <div className="part_1">
+                    <div className="input_group">
+                      <label htmlFor="name">Name</label>
+                      <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        placeholder="Contact's Name"
+                        defaultValue={dialogFields.Name}
+                        ref={Name_input}
+                        required
+                      />
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="address">Address</label>
+                      <input
+                        type="text"
+                        name="address"
+                        id="address"
+                        placeholder="Contact's Address"
+                        defaultValue={dialogFields.Address}
+                        ref={Address_input}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="part_2">
+                    <div className="input_group">
+                      <label htmlFor="phone">Phone</label>
+                      <input
+                        type="number"
+                        min={0}
+                        maxLength={11}
+                        name="phone"
+                        id="phone"
+                        placeholder="Phone Number"
+                        defaultValue={dialogFields.Phone}
+                        ref={Phone_input}
+                        required
+                      />
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="email">Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="Email Address"
+                        defaultValue={dialogFields.Email}
+                        ref={Email_input}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="part_3">
+                    <div className="input_group">
+                      <label htmlFor="type">Contact Type</label>
+                      <div className="custom_select">
+                        <select
+                          name="type"
+                          id="type"
+                          defaultValue={dialogFields.Type}
+                          required
+                          ref={Type_input}
+                        >
+                          <option value="Family">Family</option>
+                          <option value="Friend">Friend</option>
+                          <option value="Work">Work</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="part_4">
+                    <div className="input_group">
+                      <button type="submit" className="btn">
+                        Add
                       </button>
                     </div>
                   </div>

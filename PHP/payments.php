@@ -11,12 +11,13 @@
     
 
     if(!empty($TransCode)&&!empty($AccNo)&&!empty($AccName)&&!empty($Amount)&&!empty($Date)&&!empty($Type)){
+        $DateValue = ($Date !== ' ') ? $Date : null;
         $query = $conn->prepare("INSERT INTO payments (
             `Trans. Code`, `Acc. No.`, `Acc. Name`,Amount, Date, Type
             ) VALUES (?, ?, ?, ?, ?, ?)");
 
         $query->bind_param("ssssss",
-        $TransCode, $AccNo, $AccName, $Amount, $Date, $Type);
+        $TransCode, $AccNo, $AccName, $Amount, $DateValue, $Type);
 
         $query->execute();//Execute the query
 

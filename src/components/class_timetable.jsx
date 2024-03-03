@@ -62,52 +62,14 @@ const Class_Timetable = () => {
     navigate("/timetables");
   };
 
-  const handleAddRow = () => {
-    let formData = new FormData();
-    formData.append("Start", "00:00");
-    formData.append("SPeriod", "AM");
-    formData.append("End", "00:00");
-    formData.append("EPeriod", "AM");
-    formData.append("Mon", " ");
-    formData.append("Tue", " ");
-    formData.append("Wed", " ");
-    formData.append("Thur", " ");
-    formData.append("Fri", " ");
+  const openDialogAdd = () => {
+    //When the Add Row button is Clicked
+    setDialogFields({
+      dialogTitle: "Add",
+    });
 
-    axios({
-      //Insert new blank data in the database
-      method: "post",
-      url: "http://localhost:80/homesys/PHP/classTimetable.php",
-      data: formData,
-      config: {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      },
-    })
-      .then((response) => {
-        if (response.data == 1) {
-          toast.success("Added Row successfully", {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 1000,
-          });
-
-          setTimetableUpdate((prevState) => {
-            return {
-              ...prevState,
-              updated: prevState.updated + 1,
-            };
-          });
-        } else {
-          toast.error("Oops, Something's wrong :(", {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 1000,
-          });
-        }
-      })
-      .catch((e) => {
-        alert("Network Error", e);
-      });
+    setDialogType("add");
+    setIsDialogOpen(true);
   };
 
   const openDialogClassT = (x, e) => {
@@ -142,6 +104,57 @@ const Class_Timetable = () => {
     }
   };
 
+  const handleAddTimetable = (e) => {
+    e.preventDefault();
+
+    let formData = new FormData();
+
+    formData.append("Start", Start_input.current.value);
+    formData.append("SPeriod", SPeriod_input.current.value);
+    formData.append("End", End_input.current.value);
+    formData.append("EPeriod", EPeriod_input.current.value);
+    formData.append("Mon", Mon_input.current.value);
+    formData.append("Tue", Tue_input.current.value);
+    formData.append("Wed", Wed_input.current.value);
+    formData.append("Thur", Thur_input.current.value);
+    formData.append("Fri", Fri_input.current.value);
+
+    axios({
+      method: "post",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/classTimetable.php",
+      data: formData,
+      config: {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    })
+      .then((response) => {
+        if (response.data == 1) {
+          toast.success("Added successfully", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+
+          setTimetableUpdate((prevState) => {
+            return {
+              ...prevState,
+              updated: prevState.updated + 1,
+            };
+          });
+        } else {
+          toast.error("Oops, Something's wrong :(", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+        }
+      })
+      .catch((e) => {
+        alert("Network Error", e);
+      });
+
+    setIsDialogOpen(false);
+  };
   const handleUpdateTimetable = (e, row_id) => {
     e.preventDefault();
 
@@ -170,7 +183,7 @@ const Class_Timetable = () => {
     axios({
       //Update the new task and status in the database
       method: "post",
-      url: "http://localhost:80/homesys/PHP/classTimetable/editClassTimetable.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/classTimetable/editClassTimetable.php",
       data: formData,
       config: {
         headers: {
@@ -211,7 +224,7 @@ const Class_Timetable = () => {
     axios({
       //Delete the row in the database
       method: "get",
-      url: "http://localhost:80/homesys/PHP/classTimetable/deleteClassTimetable.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/classTimetable/deleteClassTimetable.php",
       params: { id: row_Id },
       withCredentials: false,
     })
@@ -247,7 +260,7 @@ const Class_Timetable = () => {
 
     axios({
       method: "get",
-      url: "http://localhost:80/homesys/PHP/classTimetable/getClassTimetable.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/classTimetable/getClassTimetable.php",
     })
       .then((response) => {
         setTimetableData(response.data);
@@ -340,7 +353,7 @@ const Class_Timetable = () => {
                       ) : (
                         <tr>
                           <td className="not_found" colSpan={8}>
-                            Timetable is Empty! Please Add Row and Edit
+                            Timetable is Empty! Please Add Row
                           </td>
                         </tr>
                       )}
@@ -349,7 +362,7 @@ const Class_Timetable = () => {
                 </div>
 
                 <div className="button_part">
-                  <button className="btn" onClick={handleAddRow}>
+                  <button className="btn" onClick={openDialogAdd}>
                     Add Row
                   </button>
                 </div>
@@ -520,6 +533,139 @@ const Class_Timetable = () => {
                     <div className="input_group">
                       <button type="submit" className="btn">
                         Update
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              ) : dialogType === "add" ? (
+                <form
+                  className="dialog_form"
+                  onSubmit={(e) => handleAddTimetable(e)}
+                >
+                  <div className="part_1">
+                    <div className="input_group">
+                      <label htmlFor="start">Start At</label>
+                      <input
+                        type="time"
+                        name="Start"
+                        id="start"
+                        placeholder="00:00"
+                        required
+                        ref={Start_input}
+                      />
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="speriod">Period Type</label>
+                      <div className="custom_select">
+                        <select
+                          name="SPeriod"
+                          id="speriod"
+                          required
+                          ref={SPeriod_input}
+                        >
+                          <option value="AM">AM</option>
+                          <option value="PM">PM</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="end">End At</label>
+                      <input
+                        type="time"
+                        name="End"
+                        id="end"
+                        placeholder="00:00"
+                        required
+                        ref={End_input}
+                      />
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="eperiod">Period Type</label>
+                      <div className="custom_select">
+                        <select
+                          name="EPeriod"
+                          id="eperiod"
+                          required
+                          ref={EPeriod_input}
+                        >
+                          <option value="AM">AM</option>
+                          <option value="PM">PM</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="part_2">
+                    <div className="input_group">
+                      <label htmlFor="mon">Mon</label>
+                      <input
+                        type="text"
+                        name="Mon"
+                        id="mon"
+                        placeholder="Monday..."
+                        required
+                        ref={Mon_input}
+                      />
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="tue">Tue</label>
+                      <input
+                        type="text"
+                        name="Tue"
+                        id="tue"
+                        placeholder="Tuesday..."
+                        required
+                        ref={Tue_input}
+                      />
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="wed">Wed</label>
+                      <input
+                        type="text"
+                        name="Wed"
+                        id="wed"
+                        placeholder="Wednesday..."
+                        required
+                        ref={Wed_input}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="part_3">
+                    <div className="input_group">
+                      <label htmlFor="thur">Thur</label>
+                      <input
+                        type="text"
+                        name="Thur"
+                        id="thur"
+                        placeholder="Thursday..."
+                        required
+                        ref={Thur_input}
+                      />
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="fri">Fri</label>
+                      <input
+                        type="text"
+                        name="Fri"
+                        id="fri"
+                        placeholder="Friday..."
+                        required
+                        ref={Fri_input}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="part_4">
+                    <div className="input_group">
+                      <button type="submit" className="btn">
+                        Add
                       </button>
                     </div>
                   </div>

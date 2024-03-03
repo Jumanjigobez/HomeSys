@@ -21,6 +21,7 @@ const Projects = () => {
     Description_input = useRef(),
     Type_input = useRef(),
     Date_input = useRef(),
+    DateF_input = useRef(),
     Status_input = useRef(),
     Link_input = useRef(); //These ones will hold the input values referenced to
 
@@ -50,7 +51,7 @@ const Projects = () => {
 
       axios({
         method: "post",
-        url: "http://localhost:80/homesys/PHP/projects/projectSearch.php",
+        url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/projects/projectSearch.php",
         data: formData,
         config: {
           headers: {
@@ -67,7 +68,7 @@ const Projects = () => {
     } else {
       axios({
         method: "get",
-        url: "http://localhost:80/homesys/PHP/projects/getProjects.php",
+        url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/projects/getProjects.php",
       })
         .then((response) => {
           setProjectsData(response.data);
@@ -89,8 +90,9 @@ const Projects = () => {
         Description: fields[3].innerText,
         Type: fields[4].innerText,
         Date_Started: fields[5].innerText,
-        Status: fields[6].innerText,
-        Link: fields[7].innerText,
+        Date_Finished: fields[6].innerText,
+        Status: fields[7].innerText,
+        Link: fields[8].innerText,
       });
 
       setDialogType("edit");
@@ -109,19 +111,33 @@ const Projects = () => {
     }
   };
 
-  const handleAddRow = () => {
+  const openDialogAdd = () => {
+    //When the Add Row button is Clicked
+    setDialogFields({
+      dialogTitle: "Add",
+    });
+
+    setDialogType("add");
+    setIsDialogOpen(true);
+  };
+
+  const handleAddProject = (e) => {
+    e.preventDefault();
+
     let formData = new FormData();
-    formData.append("Title", " ");
-    formData.append("Description", " ");
-    formData.append("Type", " ");
-    formData.append("Date_Started", " ");
-    formData.append("Status", " ");
-    formData.append("Link", " ");
+
+    formData.append("Title", Title_input.current.value);
+    formData.append("Description", Description_input.current.value);
+    formData.append("Type", Type_input.current.value);
+    formData.append("Date_Started", Date_input.current.value);
+    formData.append("Date_Finished", DateF_input.current.value);
+    formData.append("Status", Status_input.current.value);
+    formData.append("Link", Link_input.current.value);
 
     axios({
-      //Insert new blank data in the database
+      //Update the new task and status in the database
       method: "post",
-      url: "http://localhost:80/homesys/PHP/projects.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/projects.php",
       data: formData,
       config: {
         headers: {
@@ -131,7 +147,7 @@ const Projects = () => {
     })
       .then((response) => {
         if (response.data == 1) {
-          toast.success("Added Row successfully", {
+          toast.success("Added successfully", {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 1000,
           });
@@ -152,6 +168,8 @@ const Projects = () => {
       .catch((e) => {
         alert("Network Error", e);
       });
+
+    setIsDialogOpen(false);
   };
 
   const handleUpdateProject = (e, row_id) => {
@@ -164,13 +182,14 @@ const Projects = () => {
     formData.append("Description", Description_input.current.value);
     formData.append("Type", Type_input.current.value);
     formData.append("Date_Started", Date_input.current.value);
+    formData.append("Date_Finished", DateF_input.current.value);
     formData.append("Status", Status_input.current.value);
     formData.append("Link", Link_input.current.value);
 
     axios({
       //Update the new task and status in the database
       method: "post",
-      url: "http://localhost:80/homesys/PHP/projects/editProjects.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/projects/editProjects.php",
       data: formData,
       config: {
         headers: {
@@ -211,7 +230,7 @@ const Projects = () => {
     axios({
       //Delete the row in the database
       method: "get",
-      url: "http://localhost:80/homesys/PHP/projects/deleteProjects.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/projects/deleteProjects.php",
       params: { id: row_id },
       withCredentials: false,
     })
@@ -246,7 +265,7 @@ const Projects = () => {
 
     axios({
       method: "get",
-      url: "http://localhost:80/homesys/PHP/projects/getProjects.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/projects/getProjects.php",
     })
       .then((response) => {
         setProjectsData(response.data);
@@ -316,6 +335,7 @@ const Projects = () => {
                       <th>Description</th>
                       <th>Type</th>
                       <th>Date Started</th>
+                      <th>Date Finished</th>
                       <th>Status</th>
                       <th>Link</th>
                       <th>Action</th>
@@ -332,6 +352,7 @@ const Projects = () => {
                           <td>{row.Description}</td>
                           <td>{row.Type}</td>
                           <td>{row.Date_Started}</td>
+                          <td>{row.Date_Finished}</td>
                           <td
                             className={
                               row.Status === "Completed"
@@ -365,7 +386,7 @@ const Projects = () => {
                     ) : (
                       <tr>
                         <td className="not_found" colSpan={8}>
-                          No Projects Found! Please Add Row and Edit
+                          No Projects Found! Please Add Row
                         </td>
                       </tr>
                     )}
@@ -381,10 +402,16 @@ const Projects = () => {
                 <div class="summary_2">
                   <p>Total Completed: {completed_count}</p>
                 </div>
+
+                <div class="summary_2">
+                  <p>
+                    Total InComplete: {projectsData.length - completed_count}
+                  </p>
+                </div>
               </div>
 
               <div className="button_part">
-                <button className="btn" onClick={handleAddRow}>
+                <button className="btn" onClick={openDialogAdd}>
                   Add Row
                 </button>
               </div>
@@ -485,6 +512,20 @@ const Projects = () => {
                     </div>
 
                     <div className="input_group">
+                      <label htmlFor="date">Date Finished</label>
+                      <input
+                        type="date"
+                        name="Date"
+                        id="date"
+                        placeholder="Date"
+                        defaultValue={dialogFields.Date_Finished}
+                        ref={DateF_input}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="part_3">
+                    <div className="input_group">
                       <label htmlFor="status">Status</label>
                       <div className="custom_select">
                         <select
@@ -518,6 +559,128 @@ const Projects = () => {
                     <div className="input_group">
                       <button type="submit" className="btn">
                         Update
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              ) : dialogType === "add" ? (
+                <form
+                  className="dialog_form"
+                  onSubmit={(e) => handleAddProject(e)}
+                >
+                  <div className="part_1">
+                    <div className="child">
+                      <div className="input_group">
+                        <label htmlFor="title">Title</label>
+                        <input
+                          type="text"
+                          name="Title"
+                          id="title"
+                          placeholder="Title"
+                          defaultValue={dialogFields.Title}
+                          required
+                          ref={Title_input}
+                        />
+                      </div>
+
+                      <div
+                        className="input_group"
+                        style={{ marginTop: "1rem" }}
+                      >
+                        <label htmlFor="type">Type</label>
+                        <div className="custom_select">
+                          <select
+                            name="type"
+                            id="type"
+                            defaultValue={dialogFields.Type}
+                            required
+                            ref={Type_input}
+                          >
+                            <option value="Personal">Personal</option>
+                            <option value="Client">Client</option>
+                            <option value="Other">Other</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="description">Description</label>
+                      <textarea
+                        name="Description"
+                        id="description"
+                        cols="30"
+                        rows="10"
+                        placeholder="Brief description..."
+                        defaultValue={dialogFields.Description}
+                        required
+                        ref={Description_input}
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <div className="part_2">
+                    <div className="input_group">
+                      <label htmlFor="date">Date Started</label>
+                      <input
+                        type="date"
+                        name="Date"
+                        id="date"
+                        placeholder="Date"
+                        defaultValue={dialogFields.Date_Started}
+                        required
+                        ref={Date_input}
+                      />
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="date">Date Finished</label>
+                      <input
+                        type="date"
+                        name="Date"
+                        id="date"
+                        placeholder="Date"
+                        defaultValue={dialogFields.Date_Finished}
+                        ref={DateF_input}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="part_3">
+                    <div className="input_group">
+                      <label htmlFor="status">Status</label>
+                      <div className="custom_select">
+                        <select
+                          name="status"
+                          id="status"
+                          defaultValue={dialogFields.Status}
+                          required
+                          ref={Status_input}
+                        >
+                          <option value="Pending">Pending</option>
+                          <option value="Completed">Completed</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="link">Link</label>
+                      <input
+                        type="text"
+                        name="link"
+                        id="link"
+                        placeholder="Paste Link"
+                        required
+                        defaultValue={dialogFields.Link}
+                        ref={Link_input}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="part_3">
+                    <div className="input_group">
+                      <button type="submit" className="btn">
+                        Add
                       </button>
                     </div>
                   </div>

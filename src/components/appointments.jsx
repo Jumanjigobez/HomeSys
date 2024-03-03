@@ -21,7 +21,7 @@ const Appointments = () => {
 
   const Name_input = useRef(),
     Address_input = useRef(),
-    Phone_input = useRef(),
+    Contacts_input = useRef(),
     Date_input = useRef(),
     Type_input = useRef(),
     Status_input = useRef();
@@ -51,7 +51,7 @@ const Appointments = () => {
 
       axios({
         method: "post",
-        url: "http://localhost:80/homesys/PHP/appointments/appointmentSearch.php",
+        url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/appointments/appointmentSearch.php",
         data: formData,
         config: {
           headers: {
@@ -68,7 +68,7 @@ const Appointments = () => {
     } else {
       axios({
         method: "get",
-        url: "http://localhost:80/homesys/PHP/appointments/getAppointments.php",
+        url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/appointments/getAppointments.php",
       })
         .then((response) => {
           setAppointmentsData(response.data);
@@ -79,19 +79,60 @@ const Appointments = () => {
     }
   };
 
-  const handleAddRow = () => {
+  const openDialogAdd = () => {
+    setDialogFields({
+      dialogTitle: "Add",
+    });
+
+    setDialogType("add");
+    setIsDialogOpen(true);
+  };
+
+  const openDialogAppointment = (type, e) => {
+    let row = e.target.parentElement.parentElement, //access the whole row of that element
+      fields = row.querySelectorAll("td");
+
+    if (type === "edit") {
+      setDialogFields({
+        dialogTitle: "Edit",
+        Id: fields[0].innerText,
+        Name: fields[2].innerText,
+        Address: fields[3].innerText,
+        Contacts: fields[4].innerText,
+        Date: fields[5].innerText,
+        Type: fields[6].innerText,
+        Status: fields[7].innerText,
+      });
+
+      setDialogType("edit");
+      setIsDialogOpen(true);
+    } else if (type === "delete") {
+      setDialogFields({
+        dialogTitle: "Delete",
+        Id: fields[0].innerText,
+        Name: fields[2].innerText,
+      });
+
+      setDialogType("delete");
+      setIsDialogOpen(true);
+    }
+  };
+
+  const handleAddAppointments = (e) => {
+    e.preventDefault();
     let formData = new FormData();
-    formData.append("Name", " ");
-    formData.append("Address", " ");
-    formData.append("Phone", " ");
-    formData.append("Date", " ");
-    formData.append("Type", " ");
-    formData.append("Status", " ");
+
+    formData.append("Name", Name_input.current.value);
+    formData.append("Address", Address_input.current.value);
+    formData.append("Contacts", Contacts_input.current.value);
+    formData.append("Date", Date_input.current.value);
+    formData.append("Type", Type_input.current.value);
+    formData.append("Status", Status_input.current.value);
 
     axios({
-      //Insert new blank data in the database
+      //Update the new task and status in the database
       method: "post",
-      url: "http://localhost:80/homesys/PHP/appointments.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/appointments.php",
       data: formData,
       config: {
         headers: {
@@ -101,7 +142,7 @@ const Appointments = () => {
     })
       .then((response) => {
         if (response.data == 1) {
-          toast.success("Added Row successfully", {
+          toast.success("Added successfully", {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 1000,
           });
@@ -122,36 +163,8 @@ const Appointments = () => {
       .catch((e) => {
         alert("Network Error", e);
       });
-  };
 
-  const openDialogAppointment = (type, e) => {
-    let row = e.target.parentElement.parentElement, //access the whole row of that element
-      fields = row.querySelectorAll("td");
-
-    if (type === "edit") {
-      setDialogFields({
-        dialogTitle: "Edit",
-        Id: fields[0].innerText,
-        Name: fields[2].innerText,
-        Address: fields[3].innerText,
-        Phone: fields[4].innerText,
-        Date: fields[5].innerText,
-        Type: fields[6].innerText,
-        Status: fields[7].innerText,
-      });
-
-      setDialogType("edit");
-      setIsDialogOpen(true);
-    } else if (type === "delete") {
-      setDialogFields({
-        dialogTitle: "Delete",
-        Id: fields[0].innerText,
-        Name: fields[2].innerText,
-      });
-
-      setDialogType("delete");
-      setIsDialogOpen(true);
-    }
+    setIsDialogOpen(false);
   };
 
   const handleUpdateAppointments = (e, row_id) => {
@@ -161,7 +174,7 @@ const Appointments = () => {
     formData.append("Id", row_id);
     formData.append("Name", Name_input.current.value);
     formData.append("Address", Address_input.current.value);
-    formData.append("Phone", Phone_input.current.value);
+    formData.append("Contacts", Contacts_input.current.value);
     formData.append("Date", Date_input.current.value);
     formData.append("Type", Type_input.current.value);
     formData.append("Status", Status_input.current.value);
@@ -169,7 +182,7 @@ const Appointments = () => {
     axios({
       //Update the new task and status in the database
       method: "post",
-      url: "http://localhost:80/homesys/PHP/appointments/editAppointments.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/appointments/editAppointments.php",
       data: formData,
       config: {
         headers: {
@@ -210,7 +223,7 @@ const Appointments = () => {
     axios({
       //Delete the row in the database
       method: "get",
-      url: "http://localhost:80/homesys/PHP/appointments/deleteAppointments.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/appointments/deleteAppointments.php",
       params: { id: row_id },
       withCredentials: false,
     })
@@ -246,7 +259,7 @@ const Appointments = () => {
 
     axios({
       method: "get",
-      url: "http://localhost:80/homesys/PHP/appointments/getAppointments.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/appointments/getAppointments.php",
     })
       .then((response) => {
         setAppointmentsData(response.data);
@@ -313,7 +326,7 @@ const Appointments = () => {
                       <th>No.</th>
                       <th>Name</th>
                       <th>Address</th>
-                      <th>Phone</th>
+                      <th>Contacts</th>
                       <th>Date</th>
                       <th>Type</th>
                       <th>Status</th>
@@ -329,11 +342,7 @@ const Appointments = () => {
                           <td>{count++}</td>
                           <td>{row.Name}</td>
                           <td>{row.Address}</td>
-                          <td>
-                            <a href={`tel:${row.Phone}`} rel="noreferrer">
-                              {row.Phone}
-                            </a>
-                          </td>
+                          <td>{row.Contacts}</td>
                           <td>{row.Date}</td>
                           <td>{row.Type}</td>
                           <td
@@ -370,7 +379,7 @@ const Appointments = () => {
                     ) : (
                       <tr>
                         <td className="not_found" colSpan={9}>
-                          No Appointments Found! Please Add Row and Edit
+                          No Appointments Found! Please Add Row
                         </td>
                       </tr>
                     )}
@@ -386,10 +395,14 @@ const Appointments = () => {
                 <div className="summary_2">
                   <p>Total Done: {done_count}</p>
                 </div>
+
+                <div className="summary_2">
+                  <p>Total Pending: {appointmentsData.length - done_count}</p>
+                </div>
               </div>
 
               <div className="button_part">
-                <button className="btn" onClick={handleAddRow}>
+                <button className="btn" onClick={openDialogAdd}>
                   Add Row
                 </button>
               </div>
@@ -451,16 +464,14 @@ const Appointments = () => {
 
                   <div className="part_2">
                     <div className="input_group">
-                      <label htmlFor="phone">Phone</label>
+                      <label htmlFor="contacts">Contacts</label>
                       <input
-                        type="number"
-                        min={0}
-                        maxLength={11}
-                        name="phone"
-                        id="phone"
-                        placeholder="Phone Number"
-                        defaultValue={dialogFields.Phone}
-                        ref={Phone_input}
+                        type="text"
+                        name="contacts"
+                        id="contacts"
+                        placeholder="contacts Number / Email..."
+                        defaultValue={dialogFields.Contacts}
+                        ref={Contacts_input}
                         required
                       />
                     </div>
@@ -519,6 +530,111 @@ const Appointments = () => {
                     <div className="input_group">
                       <button type="submit" className="btn">
                         Update
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              ) : dialogType === "add" ? (
+                <form
+                  className="dialog_form"
+                  onSubmit={(e) => handleAddAppointments(e)}
+                >
+                  <div className="part_1">
+                    <div className="input_group">
+                      <label htmlFor="name">Name</label>
+                      <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        placeholder="Appointment Name"
+                        defaultValue={dialogFields.Name}
+                        ref={Name_input}
+                        required
+                      />
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="address">Address</label>
+                      <input
+                        type="text"
+                        name="address"
+                        id="address"
+                        placeholder="Appointment Address"
+                        defaultValue={dialogFields.Address}
+                        ref={Address_input}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="part_2">
+                    <div className="input_group">
+                      <label htmlFor="contacts">Contacts</label>
+                      <input
+                        type="text"
+                        name="contacts"
+                        id="contacts"
+                        placeholder="contacts Number / Email..."
+                        defaultValue={dialogFields.Contacts}
+                        ref={Contacts_input}
+                        required
+                      />
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="date">Date</label>
+                      <input
+                        type="date"
+                        name="date"
+                        id="date"
+                        placeholder="Date"
+                        defaultValue={dialogFields.Date}
+                        ref={Date_input}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="part_3">
+                    <div className="input_group">
+                      <label htmlFor="type">Appointment Type</label>
+                      <div className="custom_select">
+                        <select
+                          name="type"
+                          id="type"
+                          defaultValue={dialogFields.Type}
+                          required
+                          ref={Type_input}
+                        >
+                          <option value="Work">Work</option>
+                          <option value="Personal">Personal</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="status">Appointment Status</label>
+                      <div className="custom_select">
+                        <select
+                          name="status"
+                          id="status"
+                          defaultValue={dialogFields.Status}
+                          required
+                          ref={Status_input}
+                        >
+                          <option value="Pending">Pending</option>
+                          <option value="Done">Done</option>
+                          <option value="Cancelled">Cancelled</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="part_4">
+                    <div className="input_group">
+                      <button type="submit" className="btn">
+                        Add
                       </button>
                     </div>
                   </div>

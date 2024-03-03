@@ -2,7 +2,7 @@
 
     include "../config.php";
 
-    $query = $conn->prepare("SELECT * FROM projects");
+    $query = $conn->prepare("SELECT * FROM projects ORDER BY `Date Started` Desc");
     $query->execute();
 
     $result = $query->get_result();
@@ -18,6 +18,7 @@
             'Description' => $row['Description'],
             'Type' => $row['Type'],
             'Date_Started' => $row['Date Started'],
+            'Date_Finished' => $row['Date Finished'],
             'Status' => $row['Status'],
             'Link' => $row['Link'],
            

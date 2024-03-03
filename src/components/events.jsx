@@ -51,7 +51,7 @@ const Events = () => {
 
       axios({
         method: "post",
-        url: "http://localhost:80/homesys/PHP/events/eventSearch.php",
+        url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/events/eventSearch.php",
         data: formData,
         config: {
           headers: {
@@ -68,7 +68,7 @@ const Events = () => {
     } else {
       axios({
         method: "get",
-        url: "http://localhost:80/homesys/PHP/Events/getEvents.php",
+        url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/Events/getEvents.php",
       })
         .then((response) => {
           setEventsData(response.data);
@@ -79,49 +79,13 @@ const Events = () => {
     }
   };
 
-  const handleAddRow = () => {
-    let formData = new FormData();
-    formData.append("Name", " ");
-    formData.append("Venue", " ");
-    formData.append("Date", " ");
-    formData.append("Contact", " ");
-    formData.append("Type", " ");
-    formData.append("Status", " ");
+  const openDialogAdd = () => {
+    setDialogFields({
+      dialogTitle: "Add",
+    });
 
-    axios({
-      //Insert new blank data in the database
-      method: "post",
-      url: "http://localhost:80/homesys/PHP/events.php",
-      data: formData,
-      config: {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      },
-    })
-      .then((response) => {
-        if (response.data == 1) {
-          toast.success("Added Row successfully", {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 1000,
-          });
-
-          setEventsUpdate((prevState) => {
-            return {
-              ...prevState,
-              updated: prevState.updated + 1,
-            };
-          });
-        } else {
-          toast.error("Oops, Something's wrong :(", {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 1000,
-          });
-        }
-      })
-      .catch((e) => {
-        alert("Network Error", e);
-      });
+    setDialogType("add");
+    setIsDialogOpen(true);
   };
 
   const openDialogEvents = (type, e) => {
@@ -154,6 +118,55 @@ const Events = () => {
     }
   };
 
+  const handleAddEvents = (e) => {
+    e.preventDefault();
+    let formData = new FormData();
+
+    formData.append("Name", Name_input.current.value);
+    formData.append("Venue", Venue_input.current.value);
+    formData.append("Date", Date_input.current.value);
+    formData.append("Contact", Contact_input.current.value);
+    formData.append("Type", Type_input.current.value);
+    formData.append("Status", Status_input.current.value);
+
+    axios({
+      //Update the new task and status in the database
+      method: "post",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/events.php",
+      data: formData,
+      config: {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    })
+      .then((response) => {
+        if (response.data == 1) {
+          toast.success("Added successfully", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+
+          setEventsUpdate((prevState) => {
+            return {
+              ...prevState,
+              updated: prevState.updated + 1,
+            };
+          });
+        } else {
+          toast.error("Oops, Something's wrong :(", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+        }
+      })
+      .catch((e) => {
+        alert("Network Error", e);
+      });
+
+    setIsDialogOpen(false);
+  };
+
   const handleUpdateEvents = (e, row_id) => {
     e.preventDefault();
     let formData = new FormData();
@@ -169,7 +182,7 @@ const Events = () => {
     axios({
       //Update the new task and status in the database
       method: "post",
-      url: "http://localhost:80/homesys/PHP/events/editEvents.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/events/editEvents.php",
       data: formData,
       config: {
         headers: {
@@ -210,7 +223,7 @@ const Events = () => {
     axios({
       //Delete the row in the database
       method: "get",
-      url: "http://localhost:80/homesys/PHP/events/deleteEvents.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/events/deleteEvents.php",
       params: { id: row_id },
       withCredentials: false,
     })
@@ -246,7 +259,7 @@ const Events = () => {
 
     axios({
       method: "get",
-      url: "http://localhost:80/homesys/PHP/events/getEvents.php",
+      url: "http://localhost:8080/HOMESYS V1.0/homesys/PHP/events/getEvents.php",
     })
       .then((response) => {
         setEventsData(response.data);
@@ -259,8 +272,14 @@ const Events = () => {
     }, 3000);
   }, [EventsUpdate]);
   var count = 1, //Will increment the No. column of the table
-    done_count = 0; //Will hold count for the done Events
+    done_count = 0, //Will hold count for the done Events
+    pending_count = 0; //Will hold count for the pending Events
+
   EventsData.map((e) => (e.Status === "Done" ? done_count++ : done_count));
+  EventsData.map((e) =>
+    e.Status === "Pending" ? pending_count++ : pending_count
+  );
+
   return (
     <section id="active">
       <Sidebar />
@@ -361,7 +380,7 @@ const Events = () => {
                     ) : (
                       <tr>
                         <td className="not_found" colSpan={9}>
-                          No Events Found! Please Add Row and Edit
+                          No Events Found! Please Add Row
                         </td>
                       </tr>
                     )}
@@ -377,10 +396,14 @@ const Events = () => {
                 <div className="summary_2">
                   <p>Total Done: {done_count}</p>
                 </div>
+
+                <div className="summary_2">
+                  <p>Total Pending: {pending_count}</p>
+                </div>
               </div>
 
               <div className="button_part">
-                <button className="btn" onClick={handleAddRow}>
+                <button className="btn" onClick={openDialogAdd}>
                   Add Row
                 </button>
               </div>
@@ -510,6 +533,113 @@ const Events = () => {
                     <div className="input_group">
                       <button type="submit" className="btn">
                         Update
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              ) : dialogType === "add" ? (
+                <form
+                  className="dialog_form"
+                  onSubmit={(e) => handleAddEvents(e)}
+                >
+                  <div className="part_1">
+                    <div className="input_group">
+                      <label htmlFor="name">Name</label>
+                      <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        placeholder="Events Name"
+                        defaultValue={dialogFields.Name}
+                        ref={Name_input}
+                        required
+                      />
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="Venue">Venue</label>
+                      <input
+                        type="text"
+                        name="Venue"
+                        id="Venue"
+                        placeholder="Events Venue"
+                        defaultValue={dialogFields.Venue}
+                        ref={Venue_input}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="part_2">
+                    <div className="input_group">
+                      <label htmlFor="Date">Date</label>
+                      <input
+                        type="date"
+                        name="Date"
+                        id="Date"
+                        placeholder="Event Date"
+                        defaultValue={dialogFields.Date}
+                        ref={Date_input}
+                        required
+                      />
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="contact">Contact</label>
+                      <input
+                        type="text"
+                        name="contact"
+                        id="contact"
+                        placeholder="Event Contacts"
+                        defaultValue={dialogFields.Contact}
+                        ref={Contact_input}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="part_3">
+                    <div className="input_group">
+                      <label htmlFor="type">Events Type</label>
+                      <div className="custom_select">
+                        <select
+                          name="type"
+                          id="type"
+                          defaultValue={dialogFields.Type}
+                          required
+                          ref={Type_input}
+                        >
+                          <option value="Personal">Personal</option>
+                          <option value="Work">Work</option>
+
+                          <option value="Other">Other</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="input_group">
+                      <label htmlFor="status">Events Status</label>
+                      <div className="custom_select">
+                        <select
+                          name="status"
+                          id="status"
+                          defaultValue={dialogFields.Status}
+                          required
+                          ref={Status_input}
+                        >
+                          <option value="Done">Done</option>
+                          <option value="Pending">Pending</option>
+
+                          <option value="Cancelled">Cancelled</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="part_4">
+                    <div className="input_group">
+                      <button type="submit" className="btn">
+                        Add
                       </button>
                     </div>
                   </div>

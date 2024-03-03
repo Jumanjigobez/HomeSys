@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap');
 :root{
     --bg-theme : linear-gradient(to right top, #65dfc9, #6cdbeb);
     --elem-theme: linear-gradient(to right bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.3));
@@ -8,7 +8,7 @@
     --btn-theme: #000;
     --box-shadow: 2px 6px 5px rgba(0,0,0,0.4);
 
-    --font: "Ubuntu", sans-serif;
+    --font: "Poppins", sans-serif;
     --green: rgb(67, 175, 67);
     --yellow: rgb(255, 255, 0);
     --red: rgb(185, 58, 58);
@@ -86,7 +86,27 @@ input{
     border: none;
     width: 100%;
     background: var(--color-theme);
-    padding: 0.8rem 1rem;
+    padding: 0.8rem 0.5rem;
+    border-radius: 5px;
+    font-size: 15px;
+    transition: all 0.3s ease-in-out;
+}
+input[type="time"]{
+    outline: none;
+    border: none;
+    width: 100%;
+    background: var(--color-theme);
+    padding: 0.65rem 0.5rem;
+    border-radius: 5px;
+    font-size: 15px;
+    transition: all 0.3s ease-in-out;
+}
+input[type="date"]{
+    outline: none;
+    border: none;
+    min-width: 200px;
+    background: var(--color-theme);
+    padding: 0.8rem 0.5rem;
     border-radius: 5px;
     font-size: 15px;
     transition: all 0.3s ease-in-out;
@@ -160,7 +180,7 @@ textarea:focus, select:focus{
     border-radius: 0 25px 25px 0;
     z-index: 99;
     flex-basis: 210px;
-    transition: all 0.3s linear;
+    transition: all .3s linear;
 }
 .sidebar.closed{
     flex-basis: 50px;
@@ -181,7 +201,7 @@ textarea:focus, select:focus{
     list-style-type: none;
     padding: 0.8rem;
     padding-left: 0;
-    transition: padding 0.3s ease-in-out;
+    transition: padding .3s ease-in-out;
 
 }
 .sidebar.closed .menu_part ul li{
@@ -196,7 +216,7 @@ textarea:focus, select:focus{
     padding: 0.8rem;
     
     position: relative;
-    transition: all 0.3s ease-in-out;
+    transition: all .3s ease-in-out;
     
 }
 
@@ -209,7 +229,7 @@ textarea:focus, select:focus{
     width: 175px;
     height: 100%;
     background: transparent;
-    transition: width 0.3s ease-in-out;
+    transition: width .3s ease-in-out;
 }
 .sidebar.closed .menu_part ul li a::after,
 .sidebar.closed .menu_part ul li a.active::after{
@@ -228,7 +248,7 @@ textarea:focus, select:focus{
 }
 .sidebar .menu_part ul li a span{
     margin-left: 0.5rem;
-    transition: margin-left 0.3s ease-in-out;
+    transition: margin-left .3s ease-in-out;
 }
 .sidebar.closed .menu_part ul li a span{
     margin-left: -150px;
@@ -277,7 +297,7 @@ textarea:focus, select:focus{
     height: 5px;
     background: var(--btn-theme);
     border-radius: 3px;
-    transition: all .5s linear;;
+    transition: transform .3s linear;;
 }
 .menu_btn.active span:nth-child(1)::after{
     width: 33px;
@@ -321,8 +341,8 @@ textarea:focus, select:focus{
     align-items: center;
     
     gap: 2rem;
-    width: 250px;
-    height: 100px;
+    width: 270px;
+    height: 100%;
     background: var(--transparent-white);
     padding: 1rem;
     border-radius: 6px;
@@ -340,7 +360,7 @@ textarea:focus, select:focus{
     border-radius: 50%;
 }
 .box .text_part h2{
-    font-size: 18px;
+    font-size: 15px;
     text-align: center;
 }
 
@@ -428,7 +448,7 @@ table tbody tr:nth-of-type(odd) {
 .todo_content table.todo tbody td:nth-child(4){
     text-align: left;
     min-width: 200px;
-    font-size: 16px;
+    font-size: 14px;
 }
 table tbody tr:last-of-type {
     border-bottom: 2px solid var(--btn-theme);
@@ -586,7 +606,7 @@ select{
     -webkit-appearance: none;
     width: 100%;
     font-size: 15px;
-    padding: 0.8rem 1rem;
+    padding: 0.8rem 0.5rem;
     background-color: var(--color-theme);
     border: none;
     border-radius: 5px;
@@ -654,6 +674,7 @@ table.projects thead{
     gap: 1rem;
 }
 
+
 /* Projects_Part */
 .project_content .part_3{
     max-height: 260px;
@@ -662,9 +683,10 @@ table.projects thead{
 }
 .project_dialog{
     width: 500px;
+    max-height: 85%;
 }
-.project_form .part_2 .input_group .custom_select{
-    min-width: 125px;
+.project_form .part_2 .input_group {
+    width: 100%;
 }
 .project_form .part_3 .input_group{
     width: 100%;
@@ -690,7 +712,7 @@ table.projects thead{
     z-index: 1;
 }
 .footer small{
-    font-size: 15px;
+    font-size: 12px;
 }
 .footer small a{
     text-decoration: none;
@@ -716,17 +738,17 @@ table.projects thead{
         width: 50%;
         overflow: auto;
         z-index: 2;
-        box-shadow: 5px 5px 10px 1000px rgba(0,0,0,0.3);
-        transition: all .3s linear;
+        box-shadow: 5px 5px 10px 100vw rgba(0,0,0,0.3);
+        transition: left .3s linear;
     }
     .closed{
-        left: -500px;
-        box-shadow: unset;
+        left: -50vw;
+        box-shadow: 0px 0px;
     }
     .sidebar .menu_part ul li a span,
     .closed .menu_part ul li a span{
         visibility: visible;
-        margin-left: 0.5rem;
+        margin-left: 0.2rem;
     }
     .sidebar .menu_part ul li, 
     .closed .menu_part ul li{

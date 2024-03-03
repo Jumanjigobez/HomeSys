@@ -91,8 +91,9 @@ const Login = () => {
     e.preventDefault();
 
     handleLogin();
-
-    let api_url = "http://localhost:80/homesys/PHP/login.php";
+    // http://localhost:8080/HOMESYS V1.0/homesys/PHP/login.php
+    //https://homesys.000webhostapp.com/PHP/login.php
+    let api_url = "http://localhost:8080/HOMESYS V1.0/homesys/PHP/login.php";
     let formData = new FormData();
     formData.append("username", username_ref.current.value);
     formData.append("password", psk_ref.current.value);

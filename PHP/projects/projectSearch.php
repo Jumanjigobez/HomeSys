@@ -9,6 +9,7 @@
         Description like '%{$term}%' OR
         Type like '%{$term}%' OR
         'Date Started' like '%{$term}%' OR
+        'Date Finished' like '%{$term}%' OR
         Status like '%{$term}%' OR
         Link like '%{$term}%'
     ");
@@ -28,6 +29,7 @@
             'Description' => $row['Description'],
             'Type' => $row['Type'],
             'Date_Started' => $row['Date Started'],
+            'Date_Finished' => $row['Date Finished'],
             'Status' => $row['Status'],
             'Link' => $row['Link'],
            

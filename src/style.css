@@ -297,7 +297,7 @@ textarea:focus, select:focus{
     height: 5px;
     background: var(--btn-theme);
     border-radius: 3px;
-    transition: transform .3s linear;;
+    transition: all .5s linear;;
 }
 .menu_btn.active span:nth-child(1)::after{
     width: 33px;

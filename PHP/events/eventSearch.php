@@ -11,6 +11,8 @@
         Contact like '%{$term}%' OR
         Type like '%{$term}%' OR
         Status like '%{$term}%'
+
+        ORDER BY Date DESC
     ");
     
     $query->execute();

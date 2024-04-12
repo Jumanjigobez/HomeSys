@@ -2,7 +2,7 @@
 
     include "../config.php";
 
-    $query = $conn->prepare("SELECT * FROM appointments");
+    $query = $conn->prepare("SELECT * FROM appointments ORDER BY Date DESC");
     $query->execute();
 
     $result = $query->get_result();

@@ -13,6 +13,7 @@
     // CREATE TABLE `homesys`.`appointments` ( `id` INT NOT NULL AUTO_INCREMENT ,  `Name` VARCHAR(255) NOT NULL ,  `Address` VARCHAR(255) NOT NULL ,  `Phone` VARCHAR(50) NOT NULL ,  `Date` DATE NOT NULL ,  `Type` VARCHAR(100) NOT NULL ,  `Status` VARCHAR(100) NOT NULL ,    PRIMARY KEY  (`id`)) ENGINE = InnoDB;
     // CREATE TABLE `homesys`.`payments` ( `id` INT NOT NULL AUTO_INCREMENT ,  `Trans. Code` VARCHAR(255) NOT NULL ,  `Acc. No.` VARCHAR(255) NOT NULL ,  `Acc. Name` VARCHAR(255) NOT NULL ,  `Amount` VARCHAR(255) NOT NULL ,  `Date` DATE NOT NULL ,  `Type` VARCHAR(100) NOT NULL ,    PRIMARY KEY  (`id`)) ENGINE = InnoDB;
     // CREATE TABLE `homesys`.`events` ( `id` INT NOT NULL AUTO_INCREMENT ,  `Name` VARCHAR(255) NOT NULL ,  `Venue` VARCHAR(255) NOT NULL ,  `Date` DATE NOT NULL ,  `Contact` VARCHAR(255) NOT NULL ,  `Type` VARCHAR(100) NOT NULL ,  `Status` VARCHAR(100) NOT NULL ,    PRIMARY KEY  (`id`)) ENGINE = InnoDB;
+    // CREATE TABLE `homesys`.`goals` ( `#` INT NOT NULL AUTO_INCREMENT ,  `Goal` VARCHAR(255) NOT NULL ,  `Status` VARCHAR(255) NOT NULL ,    PRIMARY KEY  (`#`));
     
     $conn = mysqli_connect("localhost", "root", "","homesys");
     

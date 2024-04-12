@@ -12,7 +12,7 @@
         `Acc. Name` like '%{$term}%' OR
         Amount like '%{$term}%'
         
-        
+        ORDER BY Date DESC
     ");
     
     $query->execute();

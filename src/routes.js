@@ -13,6 +13,7 @@ import Contacts from './components/contacts';
 import Appointments from './components/appointments'
 import Payments from './components/payments';
 import Events from './components/events';
+import Goals from './components/goals';
 
 const MainRoutes = () =>{
   // Check if user is already logged in to route to the required page
@@ -32,6 +33,7 @@ const MainRoutes = () =>{
         <Route path={LoggedIn ? '/home':'/'} exact Component={LoggedIn ? Home:Login}/>
     
         <Route path={LoggedIn ? '/todo':'/'} exact Component={LoggedIn ? Todo:Login}/>
+        <Route path={LoggedIn ? '/goal':'/'} exact Component={LoggedIn ? Goals:Login}/>
         <Route path={LoggedIn ? '/timetables':'/'} exact Component={LoggedIn ? Timetables:Login}/>
         <Route path={LoggedIn ? '/timetables/personal':'/'} exact Component={LoggedIn ? Personal_Timetable:Login}/>
         <Route path={LoggedIn ? '/timetables/class':'/'} exact Component={LoggedIn ? Class_Timetable:Login}/>

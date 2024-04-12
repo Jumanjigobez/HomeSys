@@ -25,6 +25,11 @@ const Sidebar = () => {
             </NavLink>
           </li>
           <li>
+            <NavLink to="/goal" activeClassName="active">
+              <i class="fa-solid fa-bullseye"></i> <span>Goals</span>
+            </NavLink>
+          </li>
+          <li>
             <NavLink to="/timetables" activeClassName="active">
               <i class="fa-solid fa-clock"></i> <span>Timetables</span>
             </NavLink>

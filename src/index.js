@@ -6,7 +6,7 @@ import { legacy_createStore as createStore } from 'redux';
 import RootReducer from './store/reducers';
 
 import './style.css';
-import './script';
+
 import MainRoutes from './routes';
 
 const Store = createStore(RootReducer);

@@ -385,17 +385,17 @@ const Payments = () => {
                 </div>
 
                 <div className="summary_2">
-                  <p>Total Amount: {Total_Amount.toLocaleString()}</p>
+                  <p>Total Amounts: {Total_Amount.toLocaleString()}</p>
                 </div>
               </div>
 
               <div className="summary_part">
                 <div className="summary_1">
-                  <p>Total Sent: {Total_Sent.toLocaleString()}</p>
+                  <p>Amount Sent: {Total_Sent.toLocaleString()}</p>
                 </div>
 
                 <div className="summary_2">
-                  <p>Total Received: {Total_Received.toLocaleString()}</p>
+                  <p>Amount Received: {Total_Received.toLocaleString()}</p>
                 </div>
               </div>
 

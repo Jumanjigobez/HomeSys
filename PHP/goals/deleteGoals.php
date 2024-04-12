@@ -3,10 +3,9 @@
     include "../config.php";
 
     $id = $_GET['id'];
-    $status = "Achieved";
 
-    $query = $conn->prepare("UPDATE todo SET status = (?) WHERE id = (?)");
-    $query->bind_param("ss", $status, $id);
+    $query = $conn->prepare("DELETE FROM goals WHERE id = (?)");
+    $query->bind_param("s", $id);
     $query->execute();
 
     if ($query){

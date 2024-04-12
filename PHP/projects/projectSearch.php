@@ -8,10 +8,12 @@
         Title like '%{$term}%' OR
         Description like '%{$term}%' OR
         Type like '%{$term}%' OR
-        'Date Started' like '%{$term}%' OR
-        'Date Finished' like '%{$term}%' OR
+        `Date Started` like '%{$term}%' OR
+        `Date Finished` like '%{$term}%' OR
         Status like '%{$term}%' OR
         Link like '%{$term}%'
+
+        ORDER BY `Date Started` DESC
     ");
     
     $query->execute();

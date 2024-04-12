@@ -6,6 +6,7 @@
     --transparent-white: rgba(255,255,255,0.8);
     --menu-hover: #65dfc9;
     --btn-theme: #000;
+    --disabled-btn: #747474;
     --box-shadow: 2px 6px 5px rgba(0,0,0,0.4);
 
     --font: "Poppins", sans-serif;
@@ -169,7 +170,15 @@ textarea:focus, select:focus{
 .btn:hover:after{
     width: 100%;
 }
-
+.btn:disabled{
+    background: var(--disabled-btn);
+}
+.btn:disabled:hover{
+    box-shadow: unset;
+}
+.btn:disabled:after{
+    background: transparent;
+}
 /* Sidebar Part*/
 .sidebar{
     background: var(--color-theme);
@@ -179,7 +188,7 @@ textarea:focus, select:focus{
     gap: 0.2rem;
     border-radius: 0 25px 25px 0;
     z-index: 99;
-    flex-basis: 210px;
+    flex-basis: 230px;
     transition: all .3s linear;
 }
 .sidebar.closed{
@@ -839,6 +848,13 @@ table.projects thead{
     }
     .container .content_part.timetable_content .part_2{
         width: 100%;
+    }
+
+    input[type="date"]{
+        min-width: 162px;
+    }
+    .timetable_form .dialog_form .part_1{
+        flex-wrap: wrap;
     }
     .footer{
         margin-left: 0;

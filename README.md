@@ -46,6 +46,9 @@ HomeSys is a comprehensive web-based personal management system that combines es
 ### 7. Events
 - organize invited events, both personal and professional.
 
+### 8. Goals
+- Place your short and long term goals, mark achieved when goal is achieved.
+
 ## Tech Stack
 
 - **Frontend:** React.js

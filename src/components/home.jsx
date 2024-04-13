@@ -26,7 +26,7 @@ const Home = () => {
                 </div>
                 <div className="text_part">
                   <h2>
-                    My <br /> To_Do_List
+                    My <br /> To_Do_Lis
                   </h2>
                 </div>
               </div>

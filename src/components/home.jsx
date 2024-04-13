@@ -32,6 +32,19 @@ const Home = () => {
               </div>
             </NavLink>
 
+             <NavLink to="/goal">
+              <div className="box">
+                <div className="icon_part">
+                  <i class="fa-solid fa-bullseye"></i>
+                </div>
+                <div className="text_part">
+                  <h2>
+                    My <br /> Goals
+                  </h2>
+                </div>
+              </div>
+            </NavLink>
+
             <NavLink to="/timetables/personal">
               <div className="box">
                 <div className="icon_part">

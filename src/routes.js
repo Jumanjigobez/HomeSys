@@ -18,7 +18,7 @@ import Goals from "./components/goals";
 
 // http://localhost:8080/HOMESYS V1.0/homesys/PHP
 //https://homesys.000webhostapp.com/PHP
-export const api_url = "http://localhost:8080/HOMESYS V1.0/homesys/PHP";
+export const api_url = "https://homesys.000webhostapp.com/PHP";
 
 const MainRoutes = () => {
   // Check if user is already logged in to route to the required page

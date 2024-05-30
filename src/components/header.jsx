@@ -25,13 +25,13 @@ const Header = () => {
     //Update the status of the user to offline
 
     //https://homesys.000webhostapp.com/PHP/login.php
-    let api_url = api_url + "/logout.php";
+
     let formData = new FormData();
     formData.append("user_id", user);
 
     axios({
       method: "post",
-      url: api_url,
+      url: api_url + "/logout.php",
       data: formData,
       config: {
         headers: {

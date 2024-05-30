@@ -203,7 +203,9 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `psk` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_cs NOT NULL,
   `status` text NOT NULL,
-  `user_type` text NOT NULL
+  `user_type` text NOT NULL,
+  `terms_agreed` text NOT NULL,
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --

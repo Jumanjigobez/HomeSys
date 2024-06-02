@@ -19,7 +19,8 @@ const Header = () => {
       dispatch(menuOpen(true));
     }
   };
-  const handleLogout = () => {
+  const handleLogout = (e) => {
+    e.target.disabled = true;
     const user = JSON.parse(localStorage.getItem("sessions")).user_id;
     // console.log(user);
     //Update the status of the user to offline
@@ -93,7 +94,7 @@ const Header = () => {
                 : "HomeSys"
               : "HomeSys"}
           </h2>
-          <button className="btn" onClick={handleLogout}>
+          <button className="btn" onClick={(e) => handleLogout(e)}>
             Log Out
           </button>
         </div>

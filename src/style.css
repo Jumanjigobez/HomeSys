@@ -32,6 +32,7 @@ html {
 }
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
   background: #333;
@@ -164,12 +165,12 @@ select:focus {
   position: relative;
 }
 
-.form_part form .grouping {
+.grouping {
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
 }
-.form_part form .grouping.check_group {
+.grouping.check_group {
   justify-content: flex-start;
   position: relative;
 }
@@ -177,6 +178,7 @@ select:focus {
   font-weight: bold;
   border: 1px solid var(--btn-theme);
   cursor: pointer;
+  font-size: 16px;
   padding: 0.2rem 1rem;
   border-radius: 8px;
   background: transparent;
@@ -223,11 +225,14 @@ select:focus {
   justify-content: space-between;
   align-items: center;
 }
-.forgot_part p {
-  cursor: pointer;
-}
 
-.forgot_part p:hover {
+.normal_btn {
+  border: none;
+  background: transparent;
+  padding: 0.2rem 0;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
 }
 .btn {
   outline: none;
@@ -346,6 +351,36 @@ select:focus {
   margin-left: -150px;
   visibility: hidden;
 }
+
+.sidebar .settings_part {
+  margin: 1rem 0.5rem;
+}
+
+.btn3 {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--btn-theme);
+  color: black;
+}
+
+.sidebar .settings_part .btn3 span {
+  margin-left: 0.5rem;
+  transition: all 0.3s linear;
+}
+.sidebar.closed .settings_part .btn3 span {
+  margin-left: -150px;
+  visibility: hidden;
+}
+
+.sidebar .settings_part .btn3 i {
+  display: none;
+}
+.sidebar.closed .settings_part .btn3 i {
+  font-size: 20px;
+  margin-left: -5.7rem;
+  display: inline-block;
+}
+
 /* Header part*/
 #active .container {
   flex-basis: 100%;
@@ -827,6 +862,21 @@ table.projects thead {
 .contacts_form .dialog_form .part_4 .input_group {
   width: 100%;
 }
+
+/* Settings part */
+.settings_content .part_2,
+.settings_content .grouping {
+  width: 60%;
+}
+.settings_form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.settings_content .form_part form .input_group:last-child {
+  text-align: left;
+}
+
 /* Footer_Part */
 .footer {
   text-align: center;
@@ -857,10 +907,10 @@ table.projects thead {
   #login_form.signup_form {
     width: 90%;
   }
-  .form_part form .grouping {
+  .grouping {
     flex-direction: column;
   }
-  .form_part form .grouping.check_group {
+  .grouping.check_group {
     flex-direction: row;
   }
 
@@ -899,7 +949,13 @@ table.projects thead {
   .closed .menu_part ul li a.active::after {
     width: 175px;
   }
-
+  .sidebar .settings_part {
+    margin: 0.2rem;
+    margin-left: 0.8rem;
+  }
+  .sidebar .btn3 {
+    width: 85%;
+  }
   .container {
     width: 100vw;
   }
@@ -925,7 +981,8 @@ table.projects thead {
     gap: 4rem;
     font-size: small;
   }
-  .container .content_part .part_2 {
+  .container .content_part .part_2,
+  .settings_content .grouping {
     width: 90%;
   }
   .project_content .part_3 {
@@ -956,6 +1013,12 @@ table.projects thead {
   .todo_content .part_3 {
     max-height: 300px;
     overflow: auto;
+  }
+  .todo_content.setting_content .part_3 {
+    max-height: unset;
+    overflow: none;
+    flex-direction: column;
+    gap: 0.5rem;
   }
   .project_dialog,
   .dialog_box {

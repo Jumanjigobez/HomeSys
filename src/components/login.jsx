@@ -234,8 +234,10 @@ const Login = () => {
       </div>
 
       <div className="forgot_part">
-        <p>Forgot Password ? </p>
-        <p onClick={handleNewAccount}>New Account ? </p>
+        <button className="normal_btn">Forgot Password ? </button>
+        <button className="normal_btn" onClick={handleNewAccount}>
+          New Account ?{" "}
+        </button>
       </div>
       <ToastContainer />
     </div>

@@ -305,13 +305,13 @@ const Signup = () => {
         </div>
 
         <div className="forgot_part">
-          <p onClick={handleGoBack}>
+          <button className="normal_btn" onClick={handleGoBack}>
             <i className="fa fa-arrow-left"></i> Back to Login{" "}
-          </p>
+          </button>
 
-          <p onClick={openDialogPolicy} className="view_policy">
+          <button onClick={openDialogPolicy} className="view_policy">
             View Policy
-          </p>
+          </button>
         </div>
 
         <ToastContainer />

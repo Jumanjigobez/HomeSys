@@ -456,7 +456,9 @@ select:focus {
 .container .content_part {
   padding: 1rem;
   padding-top: 0;
+
   display: flex;
+  justify-content: center;
   gap: 1rem;
   flex-wrap: wrap;
 }
@@ -477,6 +479,8 @@ select:focus {
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
+.admin_box {
+}
 .box:hover {
   box-shadow: var(--box-shadow);
   background: white;
@@ -487,11 +491,26 @@ select:focus {
   padding: 1.5rem;
   border-radius: 50%;
 }
+.box .icon_part i {
+  font-size: 2rem;
+}
+
+.admin_box .text_part {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
 .box .text_part h2 {
   font-size: 15px;
   text-align: center;
 }
 
+.admin_box .text_part p {
+  font-size: 3rem;
+  font-weight: bold;
+  letter-spacing: 0.2rem;
+}
 /* Todo Content */
 .todo_content,
 .project_content {
@@ -692,6 +711,7 @@ td a:hover {
 .policy_dialog .content_part {
   margin-top: 1rem;
   display: flex;
+
   flex-direction: column;
   gap: 1.5rem;
 }

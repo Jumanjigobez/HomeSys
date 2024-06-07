@@ -112,6 +112,7 @@ const Login = () => {
           sessions.loggedIn = 1; //Update the sessions object array
           sessions.username = response.data[0].username;
           sessions.user_id = response.data[0].user_id;
+          sessions.user_type = response.data[0].user_type;
 
           localStorage.setItem("sessions", JSON.stringify(sessions)); //Store in local storage
 
@@ -123,7 +124,12 @@ const Login = () => {
           });
 
           setTimeout(() => {
-            navigate("/home");
+            if (response.data[0].user_type === "admin") {
+              navigate("/adminHome");
+            } else {
+              navigate("/home");
+            }
+
             window.location.reload(); //Reload to remove any router bugs
           }, 3000);
         } else {

@@ -17,6 +17,9 @@ import Events from "./components/events";
 import Goals from "./components/goals";
 import Settings from "./components/settings";
 
+import AdminHome from "./admin/components/home";
+import AdminSettings from "./admin/components/settings";
+
 // http://localhost:8080/HOMESYS V1.0/homesys/PHP
 //https://homesys.000webhostapp.com/PHP
 export const api_url = "http://localhost:8080/HOMESYS V1.0/homesys/PHP";
@@ -31,6 +34,12 @@ const MainRoutes = () => {
       ? JSON.parse(sessionsData).user_id !== ""
       : false;
 
+  const userAdmin =
+    localStorage && sessionsData && sessionsData !== "null"
+      ? JSON.parse(sessionsData).user_type === "admin"
+      : false;
+
+  // console.log(userAdmin);
   return (
     <>
       <BrowserRouter>
@@ -98,6 +107,17 @@ const MainRoutes = () => {
             path={LoggedIn ? "/settings" : "/"}
             exact
             Component={LoggedIn ? Settings : Login}
+          />
+
+          <Route
+            path={LoggedIn && userAdmin ? "/adminHome" : "/"}
+            exact
+            Component={LoggedIn && userAdmin ? AdminHome : Login}
+          />
+          <Route
+            path={LoggedIn && userAdmin ? "/adminSettings" : "/"}
+            exact
+            Component={LoggedIn && userAdmin ? AdminSettings : Login}
           />
 
           <Route path="*" Component={Login} />

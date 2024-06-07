@@ -7,8 +7,9 @@
 
     if(!empty($username) && !empty($psk)){
         $user_id = "";//Get the user_id
+        $user_type = "";
 
-        $query = $conn->prepare("SELECT user_id from users WHERE username = (?)");
+        $query = $conn->prepare("SELECT user_id, user_type from users WHERE username = (?)");
         $query->bind_param("s",$username);
         $query->execute();
 
@@ -18,8 +19,10 @@
             
              if(!empty($row)){
                 $user_id = $row['user_id'];
+                $user_type = $row['user_type'];
             }else{
                 $user_id = "";
+                $user_type = "";
             }
         }
 
@@ -44,7 +47,8 @@
                     if($query){
                         $responseItem = array(
                             'user_id' => $user_id,
-                            'username' => $username
+                            'username' => $username,
+                            'user_type' => $user_type
                         );
 
                         $responseArray[] = $responseItem;

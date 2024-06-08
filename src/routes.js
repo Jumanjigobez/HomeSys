@@ -19,6 +19,8 @@ import Settings from "./components/settings";
 
 import AdminHome from "./admin/components/home";
 import AdminSettings from "./admin/components/settings";
+import TotalUsers from "./admin/components/total_users";
+import OnlineUsers from "./admin/components/online-users";
 
 // http://localhost:8080/HOMESYS V1.0/homesys/PHP
 //https://homesys.000webhostapp.com/PHP
@@ -118,6 +120,16 @@ const MainRoutes = () => {
             path={LoggedIn && userAdmin ? "/adminSettings" : "/"}
             exact
             Component={LoggedIn && userAdmin ? AdminSettings : Login}
+          />
+          <Route
+            path={LoggedIn && userAdmin ? "/total-users" : "/"}
+            exact
+            Component={LoggedIn && userAdmin ? TotalUsers : Login}
+          />
+          <Route
+            path={LoggedIn && userAdmin ? "/online-users" : "/"}
+            exact
+            Component={LoggedIn && userAdmin ? OnlineUsers : Login}
           />
 
           <Route path="*" Component={Login} />

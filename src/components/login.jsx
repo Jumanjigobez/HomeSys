@@ -35,7 +35,7 @@ const Login = () => {
 
   const [formType, setFormType] = useState("login");
 
-  const sessions = { loggedIn: 0, username: "", user_id: "" };
+  const sessions = { loggedIn: 0, username: "", user_id: "", user_type: "" };
 
   const username_ref = useRef(),
     psk_ref = useRef(),
@@ -84,9 +84,7 @@ const Login = () => {
     e.preventDefault();
 
     handleLogin();
-    // // https://homesys.000webhostapp.com/PHP/login.php
-    // //https://homesys.000webhostapp.com/PHP/login.php
-    // let api_url = "https://homesys.000webhostapp.com/PHP/login.php";
+
     let formData = new FormData();
     formData.append("username", username_ref.current.value);
     formData.append("password", psk_ref.current.value);
@@ -104,7 +102,7 @@ const Login = () => {
       .then((response) => {
         if (Array.isArray(response.data)) {
           //response will be an array only on success
-          // console.log(response.data[0]);
+          console.log(response.data[0]);
 
           login_btn.current.innerText = "Loading...";
           login_btn.current.disabled = true;

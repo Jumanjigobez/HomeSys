@@ -50,7 +50,7 @@ const AdminHome = () => {
               <div className="loading_screen"></div>
             ) : (
               <>
-                <NavLink to="/online-users">
+                <NavLink to="/total-users">
                   <div className="box admin_box">
                     <div className="icon_part">
                       <i class="fa-solid fa-users"></i>
@@ -62,7 +62,7 @@ const AdminHome = () => {
                   </div>
                 </NavLink>
 
-                <NavLink to="/total-users">
+                <NavLink to="/online-users">
                   <div className="box admin_box">
                     <div className="icon_part">
                       <i class="fa-solid fa-signal"></i>

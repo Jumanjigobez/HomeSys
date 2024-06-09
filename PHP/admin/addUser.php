@@ -1,13 +1,13 @@
 <?php 
 
-    include "config.php";
+    include "../config.php";
     
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $psk = $_POST['password'];
-    $terms_check = $_POST['terms_check'];
-
-   
+    $username = $_POST['Username'];
+    $email = $_POST['Email'];
+    $psk = $_POST['Psk'];
+    $status = $_POST['Status'];
+    $user_type = $_POST['UserType'];
+    $terms_agreed = $_POST['TermsAgreed'];
 
     function generateUserID() {
         $datePart = date("Ymd");
@@ -33,7 +33,7 @@
         }
     }
 
-    if(!empty($username) && !empty($psk) && !empty($email) && $terms_check){
+    if(!empty($username) && !empty($psk) && !empty($email) && !empty($terms_agreed) && !empty($status) && !empty($user_type)){
         $query = $conn->prepare("SELECT * FROM `users` WHERE username = (?) OR email = (?)");
         $query->bind_param("ss", $username, $email);
         $query->execute();
@@ -47,14 +47,10 @@
         }else{
             $user_id = generateUserID();
             $reg_date = getRegDate($user_id);
-            $user_type = "normal";
-            $status = "offline";
-            $terms_check = "Agreed";
-            
             $psk = password_hash($psk,PASSWORD_DEFAULT);//Hashed Password
 
             $query = $conn->prepare("INSERT INTO `users` VALUES((?),(?),(?),(?),(?),(?), (?), (?))");
-            $query->bind_param("ssssssss", $user_id, $username, $email, $psk, $status, $user_type, $terms_check, $reg_date);
+            $query->bind_param("ssssssss", $user_id, $username, $email, $psk, $status, $user_type, $terms_agreed, $reg_date);
             $query->execute();
 
            if($query){

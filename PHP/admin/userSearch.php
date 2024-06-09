@@ -13,7 +13,8 @@
         psk like '%{$term}%' OR
         status like '%{$term}%' OR
         user_type like '%{$term}%' OR
-        terms_agreed like '%{$term}%' 
+        terms_agreed like '%{$term}%' OR
+        reg_date like '%{$term}%'
     )
 
     ");
@@ -36,6 +37,7 @@
             'status' => $row['status'],
             'user_type' => $row['user_type'],
             'terms_agreed' => $row['terms_agreed'],
+            'reg_date' => $row['reg_date'],
            
         );
         $usersData[] = $usersItem;

@@ -17,7 +17,8 @@
                 'psk' => $row['psk'],
                 'status' => $row['status'],
                 'user_type' => $row['user_type'],
-                'terms_agreed' => $row['terms_agreed']
+                'terms_agreed' => $row['terms_agreed'],
+                'reg_date' => $row['reg_date']
             );
 
             $responseArray[] = $responseItem;

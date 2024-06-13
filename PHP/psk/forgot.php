@@ -15,7 +15,7 @@
 
         $num = mysqli_num_rows($result);
 
-        if($num==""){
+        if($num==0){
             echo 'No User Found! Please Create a New Account';
         }else{
             $row = $result->fetch_assoc();//will be used to get the username of the user
@@ -110,7 +110,7 @@
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
                     $mail->Username = 'jumagobe3@gmail.com';//your email
-                    $mail->Password = '******************';//your email password
+                    $mail->Password = 'teagllhshlnaonir';//your email password
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port = '587';
     

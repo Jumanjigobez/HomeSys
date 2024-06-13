@@ -153,6 +153,10 @@ const Login = () => {
       });
   };
 
+  const handleForgotPsk = () => {
+    navigate("/forgot");
+  };
+
   const handleNewAccount = () => {
     navigate("/signup");
   };
@@ -238,7 +242,9 @@ const Login = () => {
       </div>
 
       <div className="forgot_part">
-        <button className="normal_btn">Forgot Password ? </button>
+        <button className="normal_btn" onClick={handleForgotPsk}>
+          Forgot Password ?{" "}
+        </button>
         <button className="normal_btn" onClick={handleNewAccount}>
           New Account ?{" "}
         </button>

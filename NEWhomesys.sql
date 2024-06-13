@@ -205,6 +205,7 @@ CREATE TABLE `users` (
   `status` text NOT NULL,
   `user_type` text NOT NULL,
   `terms_agreed` text NOT NULL,
+  `reg_date` varchar(100) NOT NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

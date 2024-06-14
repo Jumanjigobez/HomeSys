@@ -81,7 +81,7 @@
                             <h1>Password Reset Request</h1>
                             <p>Dear ' . $row['username'] . ',</p>
                             <p>Please click the button below to reset your password:</p>
-                            <p><a class="btn" href="https://homesys.000webhostapp.com/reset?token=' . $Token . '&email=' . $email . '&action=reset" target="_blank" style="color: #fff;">RESET NOW</a></p>
+                            <p><a class="btn" href="https://homesys.000webhostapp.com/reset?token=' . $Token . '&email=' . $email . '" target="_blank" style="color: #fff;">RESET NOW</a></p>
                             <p>Please be sure to click or copy the link correctly. The link will <strong>expire</strong> after <strong>1 day</strong> for security reasons.</p>
                             <p>If you did not request this forgotten password email, no action is needed, your password will not be reset. However, you may want to log into your account and change your password as someone may have guessed it!</p>
                             <p>Thanks for using HomeSys 😉</p>
@@ -110,7 +110,7 @@
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
                     $mail->Username = 'jumagobe3@gmail.com';//your email
-                    $mail->Password = 'teagllhshlnaonir';//your email password
+                   
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port = '587';
     

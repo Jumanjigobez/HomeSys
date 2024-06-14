@@ -23,6 +23,7 @@ import TotalUsers from "./admin/components/total_users";
 import OnlineUsers from "./admin/components/online-users";
 import UserManagement from "./admin/components/user-management";
 import ForgotPsk from "./components/forgot_psk";
+import ResetPsk from "./components/reset_psk";
 
 // http://localhost:8080/HOMESYS V1.0/homesys/PHP
 //https://homesys.000webhostapp.com/PHP
@@ -51,6 +52,7 @@ const MainRoutes = () => {
           <Route path="/" exact Component={Login} />
           <Route path={"/signup"} exact Component={Signup} />
           <Route path={"/forgot"} exact Component={ForgotPsk} />
+          <Route path={"/reset"} exact Component={ResetPsk} />
 
           <Route
             path={LoggedIn ? "/home" : "/"}

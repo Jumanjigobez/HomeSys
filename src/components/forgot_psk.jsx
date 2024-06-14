@@ -43,9 +43,7 @@ const ForgotPsk = () => {
 
     if (error_free) {
       handleSendResetLink();
-      // // https://homesys.000webhostapp.com/PHP/signup.php
-      // //https://homesys.000webhostapp.com/PHP/login.php
-      // let api_url = "https://homesys.000webhostapp.com/PHP/signup.php";
+
       let formData = new FormData();
       formData.append("email", email_ref.current.value);
 

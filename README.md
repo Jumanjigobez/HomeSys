@@ -91,7 +91,7 @@ HomeSys is a comprehensive web-based personal management system that combines es
 
    - Open XAMPP and start the Apache and MySQL services.
    - Create a new MySQL database for HomeSys.
-   - Import the SQL file located at PHP/homesys.sql into your newly created database.
+   - Import the SQL file `NEWhomesys.sql` into your newly created database.
 
 4. Update backend configuration:
 

@@ -56,6 +56,7 @@ main {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  overflow: hidden;
 }
 main #active {
   display: flex;
@@ -273,6 +274,12 @@ select:focus {
 .btn:disabled:after {
   background: transparent;
 }
+.btn.notification_btn {
+  background: transparent;
+  color: black;
+  border: 1px solid var(--btn-theme);
+}
+
 /* Sidebar Part*/
 .sidebar {
   background: var(--color-theme);
@@ -447,10 +454,54 @@ select:focus {
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  position: relative;
 }
 
 .header .user_part h2 {
   text-transform: capitalize;
+}
+.profile_part {
+  border: 1px solid;
+  padding: 0.8rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+.profile_part:hover {
+  box-shadow: var(--box-shadow);
+}
+.profile_part > i {
+  font-size: 2rem;
+}
+
+.profile_container {
+  position: absolute;
+  right: -20rem;
+  top: 5.5rem;
+  width: 200px;
+  background: var(--color-theme);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-radius: 12px;
+  border-top-right-radius: 0;
+  transition: all 0.3s linear;
+}
+.profile_container.active {
+  right: 0.7rem;
+}
+
+.notification_container {
+  width: 300px;
+  height: 200px;
+  background: var(--color-theme);
+  border: 1px solid black;
+  border-radius: 3px;
+  position: fixed;
+  right: 2rem;
+  top: 6rem;
+  z-index: 99;
 }
 /* content_part */
 .container .content_part {

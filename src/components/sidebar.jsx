@@ -7,9 +7,6 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const menuOpened = useSelector((state) => state.MenuReducer);
 
-  const handleGoToSettings = () => {
-    navigate("/settings");
-  };
   return (
     <div className={menuOpened ? "sidebar" : "sidebar closed"}>
       <div className="logo_part">
@@ -69,12 +66,6 @@ const Sidebar = () => {
             </li>
           </ul>
         </nav>
-      </div>
-
-      <div className="settings_part">
-        <button className="btn btn3" onClick={handleGoToSettings}>
-          <i class="fa-solid fa-gear"></i> <span>Settings</span>
-        </button>
       </div>
     </div>
   );

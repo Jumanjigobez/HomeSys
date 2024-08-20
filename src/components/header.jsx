@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { menuOpen } from "../store/actions";
 import { api_url } from "../routes";
 const Header = () => {
+  const [showProfileCont, setShowProfileCont] = useState(false);
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -66,6 +68,10 @@ const Header = () => {
         console.log(e);
       });
   };
+
+  const handleGoToSettings = () => {
+    navigate("/settings");
+  };
   return (
     <>
       <header className="header">
@@ -94,11 +100,67 @@ const Header = () => {
                 : "HomeSys"
               : "HomeSys"}
           </h2>
-          <button className="btn" onClick={(e) => handleLogout(e)}>
+
+          {/* The Notification part*/}
+          {/* <button className="btn notification_btn">
+            <i className="fa-solid fa-bell"></i>
+          </button> */}
+
+          {/* <button className="btn" onClick={(e) => handleLogout(e)}>
             Log Out
-          </button>
+          </button> */}
+
+          <div
+            className="profile_part"
+            onClick={() => {
+              showProfileCont
+                ? setShowProfileCont(false)
+                : setShowProfileCont(true);
+            }}
+          >
+            <i className="fa-solid fa-user"></i>
+          </div>
+
+          <div
+            className={
+              showProfileCont ? "profile_container active" : "profile_container"
+            }
+          >
+            <div className="settings_part">
+              <button
+                className="btn btn3"
+                style={{ width: "100%" }}
+                onClick={handleGoToSettings}
+              >
+                My Profile{" "}
+                <span style={{ marginLeft: "0.5rem" }}>
+                  <i className="fa-solid fa-gear"></i>
+                </span>
+              </button>
+            </div>
+
+            <div className="logout_part">
+              <button
+                className="btn"
+                style={{ width: "100%" }}
+                onClick={(e) => handleLogout(e)}
+              >
+                Log Out{" "}
+                <span style={{ marginLeft: "0.5rem" }}>
+                  <i class="fa-solid fa-right-from-bracket"></i>
+                </span>
+              </button>
+            </div>
+          </div>
         </div>
       </header>
+      {/* <div className="notification_container">
+        <div className="title">
+          <h3>NOTIFICATIONS</h3>
+        </div>
+
+        <div className="content"></div>
+      </div> */}
       <ToastContainer />
     </>
   );

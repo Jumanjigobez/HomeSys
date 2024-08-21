@@ -343,7 +343,7 @@ const UserManagement = () => {
                           <td>{row.user_id}</td>
                           <td>{row.username}</td>
                           <td>{row.email}</td>
-                          <td>{row.psk}</td>
+                          <td>****</td>
                           <td>{row.status}</td>
                           <td>{row.user_type}</td>
                           <td>{row.terms_agreed}</td>

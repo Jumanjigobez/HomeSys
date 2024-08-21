@@ -2,7 +2,7 @@
 
     include "../config.php";
 
-    $query = $conn->prepare("SELECT * FROM users");
+    $query = $conn->prepare("SELECT * FROM users ORDER BY reg_date DESC");
     
     if($query->execute()){
         $result = $query->get_result();

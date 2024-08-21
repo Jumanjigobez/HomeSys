@@ -10,9 +10,9 @@
     $terms_agreed = $_POST['TermsAgreed'];
 
     function generateUserID() {
-        $datePart = date("Ymd");
+        // $datePart = date("Ymd");
         $randomPart = generateRandomString(8);
-        return "user_".$randomPart . $datePart;
+        return "user_".$randomPart;
     }
     
     function generateRandomString($length) {
@@ -25,13 +25,13 @@
         return $randomString;
     }
 
-    function getRegDate($userId) {
+    // function getRegDate($userId) {
         
-        $RegDate = substr($userId, -8);
-        if (substr($RegDate, 0, 1) === "2") {
-            return $RegDate; // Outputs: 20240609
-        }
-    }
+    //     $RegDate = substr($userId, -8);
+    //     if (substr($RegDate, 0, 1) === "2") {
+    //         return $RegDate; // Outputs: 20240609
+    //     }
+    // }
 
     if(!empty($username) && !empty($psk) && !empty($email) && !empty($terms_agreed) && !empty($status) && !empty($user_type)){
         $query = $conn->prepare("SELECT * FROM `users` WHERE username = (?) OR email = (?)");
@@ -46,7 +46,8 @@
            echo "Account Exists";
         }else{
             $user_id = generateUserID();
-            $reg_date = getRegDate($user_id);
+            date_default_timezone_set('Africa/Nairobi');
+            $reg_date = date('Y-m-d H:i:s');
             $psk = password_hash($psk,PASSWORD_DEFAULT);//Hashed Password
 
             $query = $conn->prepare("INSERT INTO `users` VALUES((?),(?),(?),(?),(?),(?), (?), (?))");

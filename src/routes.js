@@ -29,19 +29,19 @@ import ResetPsk from "./components/reset_psk";
 //https://homesys.000webhostapp.com/PHP
 export const api_url = "http://localhost:8080/HOMESYS V1.0/homesys/PHP";
 
-const MainRoutes = () => {
-  // Check if user is already logged in to route to the required page
-  const sessionsData = localStorage.getItem("sessions");
+// Check if user is already logged in to route to the required page
+const sessionsData = localStorage.getItem("sessions");
 
+export const userAdmin =
+  localStorage && sessionsData && sessionsData !== "null"
+    ? JSON.parse(sessionsData).user_type === "admin"
+    : false; //Check is user is Admin
+
+const MainRoutes = () => {
   // Check if localStorage and sessionsData are truthy
   const LoggedIn =
     localStorage && sessionsData && sessionsData !== "null"
       ? JSON.parse(sessionsData).user_id !== ""
-      : false;
-
-  const userAdmin =
-    localStorage && sessionsData && sessionsData !== "null"
-      ? JSON.parse(sessionsData).user_type === "admin"
       : false;
 
   // console.log(userAdmin);

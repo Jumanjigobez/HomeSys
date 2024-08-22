@@ -283,11 +283,11 @@ const Payments = () => {
     Total_Sent = 0,
     Total_Received = 0;
 
-  PaymentsData.map((e) => (Total_Amount += Number(e.Amount)));
+  PaymentsData.map((e) => (Total_Amount += Number(e.Amount.replace(/,/g, ""))));
   PaymentsData.map((e) =>
     e.Type === "Sent"
-      ? (Total_Sent += Number(e.Amount))
-      : (Total_Received += Number(e.Amount))
+      ? (Total_Sent += Number(e.Amount.replace(/,/g, "")))
+      : (Total_Received += Number(e.Amount.replace(/,/g, "")))
   );
 
   return (
@@ -356,7 +356,12 @@ const Payments = () => {
                           <td>{row.TransCode}</td>
                           <td>{row.AccNo}</td>
                           <td>{row.AccName}</td>
-                          <td>{Number(row.Amount).toLocaleString()}</td>
+                          <td>
+                            {Number(
+                              row.Amount.replace(/,/g, "")
+                            ).toLocaleString()}
+                          </td>
+
                           <td>{row.Date}</td>
                           <td>{row.Type}</td>
                           <td className="actions">

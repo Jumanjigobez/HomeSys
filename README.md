@@ -2,7 +2,7 @@
 
 Welcome to HomeSys, your all-in-one personal management system designed to help you organize and enhance various aspects of your life.
 
-Register and Start Being Productive Now -> [Live Link](https://homesys.000webhostapp.com/)
+Register and Start Being Productive Now -> [Live Link](https://homesys.infinityfreeapp.com/)
 
 ## Table of Contents
 

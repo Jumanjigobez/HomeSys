@@ -118,9 +118,6 @@ HomeSys is a comprehensive web-based personal management system that combines es
 
 ![projects page](https://github.com/Jumanjigobez/HomeSys/assets/73429193/d647cf7d-fc4d-4894-9878-fa0ba08b5c29)
 
-![responsive](https://github.com/Jumanjigobez/HomeSys/assets/73429193/5166b7a0-39a7-469c-8d45-cdc59eb13c74) - ![Responsive](https://github.com/user-attachments/assets/7736f09e-cb0e-4b6f-81a5-5fc83de7457b)
-
-
 
 
 ## Contributing

@@ -85,17 +85,17 @@ HomeSys is a comprehensive web-based personal management system that combines es
    npm install
    ```
 
-   - Ensure XAMPP is installed and appache is running at port default 80.
+   - Ensure XAMPP is installed and Apache is running at port **8080** to prevent ip conflicts.
 
 3. Configure the database:
 
    - Open XAMPP and start the Apache and MySQL services.
-   - Create a new MySQL database for HomeSys.
+   - Create a new MySQL database for HomeSys. Name it `homesys`
    - Import the SQL file `NEWhomesys.sql` into your newly created database.
 
 4. Update backend configuration:
 
-   - Open PHP/config.php and update the database credentials if needed.
+   - Open `PHP/config.php` and update the database credentials if needed.
 
 5. Start the application:
 
@@ -105,7 +105,7 @@ HomeSys is a comprehensive web-based personal management system that combines es
 
    - Ensure XAMPP's Apache server is still running.
 
-6. Open your browser and go to http://localhost:3000 to use HomeSys.
+6. Open your browser and go to `http://localhost:3000` to use HomeSys.
 
 ## Screenshots
 

@@ -19,6 +19,10 @@ const Todo = () => {
       taskId: "",
     }),
     [error, setError] = useState(""),
+    [boxMarked, setBoxMarked] = useState(false),
+    [checkedFields, setCheckedFields] = useState({
+      Ids: [],
+    }),
     [isLoading, setIsLoading] = useState(true); //For loading screen when page is changed
 
   const Todo = useRef();
@@ -43,14 +47,13 @@ const Todo = () => {
     e.preventDefault();
 
     let Todo_val = Todo.current.value,
-      api_url = "https://homesys.000webhostapp.com/PHP/todo.php",
       formData = new FormData();
 
     formData.append("Todo", Todo_val);
 
     axios({
       method: "post",
-      url: api_url,
+      url: api_url + "/todo.php",
       data: formData,
       params: { user_id: user },
       config: {
@@ -92,7 +95,7 @@ const Todo = () => {
   const handleDoneTodo = (e, task_id) => {
     let row = e.target.parentElement.parentElement,
       table_fields = row.querySelectorAll("td"),
-      task_field = table_fields[3];
+      task_field = table_fields[4];
 
     axios({
       //Update the status in the database
@@ -115,6 +118,7 @@ const Todo = () => {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 1000,
           });
+          task_field.classList.remove("done");
           e.target.disabled = false;
         }
       })
@@ -130,7 +134,7 @@ const Todo = () => {
     if (x === "edit") {
       setDialogFields({
         dialogTitle: "Edit",
-        taskName: fields[3].innerText,
+        taskName: fields[4].innerText,
         taskStatus: fields[1].innerText,
         taskId: fields[0].innerText,
       });
@@ -141,11 +145,21 @@ const Todo = () => {
     } else if (x === "delete") {
       setDialogFields({
         dialogTitle: "Delete",
-        taskName: fields[3].innerText,
+        taskName: fields[4].innerText,
         taskId: fields[0].innerText,
       });
 
       setDialogType("delete");
+      setIsDialogOpen(true);
+      setError("");
+    } else if (x === "delete marked") {
+      setDialogFields({
+        dialogTitle: "Delete Marked",
+
+        taskId: checkedFields.Ids,
+      });
+
+      setDialogType("delete marked");
       setIsDialogOpen(true);
       setError("");
     }
@@ -236,6 +250,119 @@ const Todo = () => {
 
     setIsDialogOpen(false);
   };
+
+  const handleDeleteMarkedTodo = (e, task_ids) => {
+    e.preventDefault();
+
+    axios({
+      //Delete the task in the database
+      method: "get",
+      url: api_url + "/todo/deleteMarkedTodos.php",
+      params: { checkedIds: task_ids },
+      withCredentials: false,
+    })
+      .then((response) => {
+        if (response.data == 1) {
+          toast.success("Deleted Successfully", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+
+          setBoxMarked(false);
+          setCheckedFields({ Ids: [] });
+
+          setTodoUpdate((prevState) => {
+            return {
+              ...prevState,
+              updated: prevState.updated + 1,
+            };
+          });
+        } else {
+          toast.error("Oops, Something's wrong :(", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+        }
+      })
+      .catch((e) => {
+        alert("Network Error", e);
+      });
+
+    setIsDialogOpen(false);
+  };
+
+  const handleCheckAll = (e) => {
+    let row = e.target.parentElement.parentElement.parentElement.parentElement,
+      fields = row.querySelectorAll("td"),
+      td_fields = fields;
+    if (e.target.checked == true) {
+      td_fields.forEach((td) => {
+        if (td.className == "mark_box_row") {
+          let checkbox = td.querySelector("input");
+          checkbox.checked = true;
+          setBoxMarked(true);
+
+          setCheckedFields((prevState) => {
+            return {
+              ...prevState,
+              Ids: [...prevState.Ids, checkbox.id],
+            };
+          });
+        }
+      });
+    } else {
+      td_fields.forEach((td) => {
+        if (td.className == "mark_box_row") {
+          let checkbox = td.querySelector("input");
+          checkbox.checked = false;
+          setBoxMarked(false);
+          setCheckedFields((prevState) => {
+            return {
+              ...prevState,
+              Ids: [],
+            };
+          });
+        }
+      });
+    }
+  };
+
+  const handleCheck = (e) => {
+    let row = e.target.parentElement.parentElement.parentElement.parentElement,
+      check_fields = row.querySelectorAll("input");
+
+    if (e.target.checked) {
+      setBoxMarked(true);
+      setCheckedFields((prevState) => {
+        return {
+          ...prevState,
+          Ids: [...prevState.Ids, e.target.id],
+        };
+      });
+    } else {
+      let countChecked = 0;
+      check_fields[0].checked = false; //uncheck the parent checkbox
+      check_fields.forEach((box) => {
+        if (box.checked) {
+          countChecked += 1;
+        }
+      });
+
+      if (countChecked == 0) {
+        check_fields[0].checked = false;
+        setBoxMarked(false);
+        setCheckedFields({ Ids: [] });
+      } else {
+        setCheckedFields((prevState) => {
+          return {
+            ...prevState,
+            Ids: prevState.Ids.filter((id) => id !== e.target.id),
+          };
+        });
+      }
+    }
+  };
+  // console.log(checkedFields.Ids);
   useEffect(() => {
     //Axios to get todo data
 
@@ -295,12 +422,30 @@ const Todo = () => {
                   </form>
                 </div>
 
+                {boxMarked && (
+                  <div className="delete_marked">
+                    <button
+                      className="btn action_btn delete_btn"
+                      onClick={(e) => openDialogTodo("delete marked", e)}
+                    >
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                )}
                 <div className="part_3">
                   <table className="todo">
                     <thead>
                       <tr>
                         <th className="id">#</th>
                         <th className="id status">Status</th>
+                        <th className="mark_box">
+                          <input
+                            type="checkbox"
+                            name="mark_all"
+                            id="mark_all"
+                            onChange={(e) => handleCheckAll(e)}
+                          />
+                        </th>
                         <th>Mark</th>
                         <th>Task Name</th>
                         <th>Action</th>
@@ -313,6 +458,14 @@ const Todo = () => {
                           <tr key={row.id}>
                             <td className="id">{row.id}</td>
                             <td className="id">{row.status}</td>
+                            <td className="mark_box_row">
+                              <input
+                                type="checkbox"
+                                name="mark"
+                                id={row.id}
+                                onChange={(e) => handleCheck(e)}
+                              />
+                            </td>
                             <td>
                               <button
                                 className="btn action_btn"
@@ -343,7 +496,7 @@ const Todo = () => {
                         ))
                       ) : (
                         <tr>
-                          <td className="not_found" colSpan={3}>
+                          <td className="not_found" colSpan={4}>
                             No Task Today
                           </td>
                         </tr>
@@ -415,6 +568,26 @@ const Todo = () => {
                     <div className="input_group">
                       <button className="btn" type="submit">
                         Update
+                      </button>
+                    </div>
+                  </form>
+                ) : dialogType === "delete marked" ? (
+                  <form
+                    className="dialog_form"
+                    onSubmit={(e) =>
+                      handleDeleteMarkedTodo(e, dialogFields.taskId)
+                    }
+                  >
+                    <div className="input_group">
+                      <h3>
+                        Are you sure you want to delete the-{" "}
+                        <span style={{ color: "red" }}>marked task</span>
+                      </h3>
+                    </div>
+
+                    <div className="input_group">
+                      <button className="btn" type="submit">
+                        Confirm
                       </button>
                     </div>
                   </form>

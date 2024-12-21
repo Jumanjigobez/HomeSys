@@ -13,6 +13,10 @@ const Appointments = () => {
   const [appointmentsData, setAppointmentsData] = useState([]),
     [isDialogOpen, setIsDialogOpen] = useState(false),
     [dialogType, setDialogType] = useState(""),
+    [boxMarked, setBoxMarked] = useState(false),
+    [checkedFields, setCheckedFields] = useState({
+      Ids: [],
+    }),
     [dialogFields, setDialogFields] = useState({});
 
   const [appointmentsUpdate, setAppointmentsUpdate] = useState({
@@ -101,12 +105,12 @@ const Appointments = () => {
       setDialogFields({
         dialogTitle: "Edit",
         Id: fields[0].innerText,
-        Name: fields[2].innerText,
-        Address: fields[3].innerText,
-        Contacts: fields[4].innerText,
-        Date: fields[5].innerText,
-        Type: fields[6].innerText,
-        Status: fields[7].innerText,
+        Name: fields[3].innerText,
+        Address: fields[4].innerText,
+        Contacts: fields[5].innerText,
+        Date: fields[6].innerText,
+        Type: fields[7].innerText,
+        Status: fields[8].innerText,
       });
 
       setDialogType("edit");
@@ -114,11 +118,20 @@ const Appointments = () => {
     } else if (type === "delete") {
       setDialogFields({
         dialogTitle: "Delete",
-        Id: fields[0].innerText,
-        Name: fields[2].innerText,
+        Name: fields[3].innerText,
+        Id: checkedFields.Ids,
       });
 
       setDialogType("delete");
+      setIsDialogOpen(true);
+    } else if (type === "delete marked") {
+      setDialogFields({
+        dialogTitle: "Delete Marked",
+
+        Id: checkedFields.Ids,
+      });
+
+      setDialogType("delete marked");
       setIsDialogOpen(true);
     }
   };
@@ -260,6 +273,117 @@ const Appointments = () => {
     setIsDialogOpen(false);
   };
 
+  const handleDeleteMarkedAppointments = (e, Ids) => {
+    e.preventDefault();
+
+    axios({
+      //Delete the task in the database
+      method: "get",
+      url: api_url + "/appointments/deleteMarkedAppointments.php",
+      params: { checkedIds: Ids },
+      withCredentials: false,
+    })
+      .then((response) => {
+        if (response.data == 1) {
+          toast.success("Deleted Successfully", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+
+          setBoxMarked(false);
+          setCheckedFields({ Ids: [] });
+
+          setAppointmentsUpdate((prevState) => {
+            return {
+              ...prevState,
+              updated: prevState.updated + 1,
+            };
+          });
+        } else {
+          toast.error("Oops, Something's wrong :(", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+        }
+      })
+      .catch((e) => {
+        alert("Network Error", e);
+      });
+
+    setIsDialogOpen(false);
+  };
+
+  const handleCheckAll = (e) => {
+    let row = e.target.parentElement.parentElement.parentElement.parentElement,
+      fields = row.querySelectorAll("td"),
+      td_fields = fields;
+    if (e.target.checked == true) {
+      td_fields.forEach((td) => {
+        if (td.className == "mark_box_row") {
+          let checkbox = td.querySelector("input");
+          checkbox.checked = true;
+          setBoxMarked(true);
+
+          setCheckedFields((prevState) => {
+            return {
+              ...prevState,
+              Ids: [...prevState.Ids, checkbox.id],
+            };
+          });
+        }
+      });
+    } else {
+      td_fields.forEach((td) => {
+        if (td.className == "mark_box_row") {
+          let checkbox = td.querySelector("input");
+          checkbox.checked = false;
+          setBoxMarked(false);
+          setCheckedFields((prevState) => {
+            return {
+              ...prevState,
+              Ids: [],
+            };
+          });
+        }
+      });
+    }
+  };
+
+  const handleCheck = (e) => {
+    let row = e.target.parentElement.parentElement.parentElement.parentElement,
+      check_fields = row.querySelectorAll("input");
+
+    if (e.target.checked) {
+      setBoxMarked(true);
+      setCheckedFields((prevState) => {
+        return {
+          ...prevState,
+          Ids: [...prevState.Ids, e.target.id],
+        };
+      });
+    } else {
+      let countChecked = 0;
+      check_fields[0].checked = false; //uncheck the parent checkbox
+      check_fields.forEach((box) => {
+        if (box.checked) {
+          countChecked += 1;
+        }
+      });
+
+      if (countChecked == 0) {
+        check_fields[0].checked = false;
+        setBoxMarked(false);
+        setCheckedFields({ Ids: [] });
+      } else {
+        setCheckedFields((prevState) => {
+          return {
+            ...prevState,
+            Ids: prevState.Ids.filter((id) => id !== e.target.id),
+          };
+        });
+      }
+    }
+  };
   useEffect(() => {
     //Axios to get data from server
 
@@ -325,11 +449,30 @@ const Appointments = () => {
                 </form>
               </div>
 
+              {boxMarked && (
+                <div className="delete_marked">
+                  <button
+                    className="btn action_btn delete_btn"
+                    onClick={(e) => openDialogAppointment("delete marked", e)}
+                  >
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </div>
+              )}
+
               <div className="part_3">
                 <table className="appoints">
                   <thead>
                     <tr>
                       <th className="id">#</th>
+                      <th className="mark_box">
+                        <input
+                          type="checkbox"
+                          name="mark_all"
+                          id="mark_all"
+                          onChange={(e) => handleCheckAll(e)}
+                        />
+                      </th>
                       <th>No.</th>
                       <th>Name</th>
                       <th>Address</th>
@@ -346,6 +489,14 @@ const Appointments = () => {
                       appointmentsData.map((row) => (
                         <tr key={row.id}>
                           <td className="id">{row.id}</td>
+                          <td className="mark_box_row">
+                            <input
+                              type="checkbox"
+                              name="mark"
+                              id={row.id}
+                              onChange={(e) => handleCheck(e)}
+                            />
+                          </td>
                           <td>{count++}</td>
                           <td>{row.Name}</td>
                           <td>{row.Address}</td>
@@ -385,7 +536,7 @@ const Appointments = () => {
                       ))
                     ) : (
                       <tr>
-                        <td className="not_found" colSpan={9}>
+                        <td className="not_found" colSpan={10}>
                           No Appointments Found! Please Add Row
                         </td>
                       </tr>
@@ -644,6 +795,26 @@ const Appointments = () => {
                         Add
                       </button>
                     </div>
+                  </div>
+                </form>
+              ) : dialogType === "delete marked" ? (
+                <form
+                  className="dialog_form"
+                  onSubmit={(e) =>
+                    handleDeleteMarkedAppointments(e, dialogFields.Id)
+                  }
+                >
+                  <div className="input_group">
+                    <h3>
+                      Are you sure you want to delete the-{" "}
+                      <span style={{ color: "red" }}>marked Project</span>
+                    </h3>
+                  </div>
+
+                  <div className="input_group">
+                    <button className="btn" type="submit">
+                      Confirm
+                    </button>
                   </div>
                 </form>
               ) : (

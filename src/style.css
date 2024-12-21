@@ -56,6 +56,7 @@ main {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  overflow-x: hidden;
 }
 main #active {
   display: flex;
@@ -273,6 +274,12 @@ select:focus {
 .btn:disabled:after {
   background: transparent;
 }
+.btn.notification_btn {
+  background: transparent;
+  color: black;
+  border: 1px solid var(--btn-theme);
+}
+
 /* Sidebar Part*/
 .sidebar {
   background: var(--color-theme);
@@ -290,24 +297,20 @@ select:focus {
   width: 50px;
 }
 .sidebar .logo_part {
+  width: 100%;
   text-align: center;
-  padding: 2.2rem 1rem 1rem 1rem;
+  padding: 2.2rem 0rem 1rem 0rem;
 }
-.sidebar.closed .logo_part {
-  width: 55px;
-}
+
 .logo_part img {
   width: 100%;
 }
 .sidebar .menu_part ul li {
   list-style-type: none;
-  padding: 0.8rem;
-  padding-left: 0;
+  padding: 0.1rem 0;
+
+  display: grid;
   transition: padding 0.3s ease-in-out;
-}
-.sidebar.closed .menu_part ul li {
-  padding: 0.8rem;
-  padding-left: 0;
 }
 
 .sidebar .menu_part ul li a {
@@ -317,6 +320,7 @@ select:focus {
   padding: 0.8rem;
 
   position: relative;
+  width: 100%;
   transition: all 0.3s ease-in-out;
 }
 
@@ -326,17 +330,15 @@ select:focus {
   position: absolute;
   top: 0;
   left: 0;
-  width: 175px;
+  width: 0;
   height: 100%;
   background: transparent;
   transition: width 0.3s ease-in-out;
 }
-.sidebar.closed .menu_part ul li a::after,
-.sidebar.closed .menu_part ul li a.active::after {
-  width: 49px;
-}
+
 .sidebar .menu_part ul li a:hover::after,
 .sidebar .menu_part ul li a.active::after {
+  width: 100%;
   background: rgba(0, 0, 0, 0.2);
 }
 .sidebar .menu_part ul li a:hover,
@@ -348,8 +350,7 @@ select:focus {
   transition: margin-left 0.3s ease-in-out;
 }
 .sidebar.closed .menu_part ul li a span {
-  margin-left: -150px;
-  visibility: hidden;
+  margin-left: -10rem;
 }
 
 .sidebar .settings_part {
@@ -447,10 +448,56 @@ select:focus {
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  position: relative;
 }
 
 .header .user_part h2 {
   text-transform: capitalize;
+}
+.profile_part {
+  border: 1px solid;
+  padding: 0.8rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+.profile_part:hover {
+  box-shadow: var(--box-shadow);
+}
+.profile_part > i {
+  font-size: 2rem;
+}
+
+.profile_container {
+  position: absolute;
+  right: -20rem;
+  top: 5.5rem;
+  width: 200px;
+  background: var(--color-theme);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-radius: 12px;
+  border-top-right-radius: 0;
+  visibility: hidden;
+  transition: all 0.3s linear;
+}
+.profile_container.active {
+  right: 0.7rem;
+  visibility: visible;
+}
+
+.notification_container {
+  width: 300px;
+  height: 200px;
+  background: var(--color-theme);
+  border: 1px solid black;
+  border-radius: 3px;
+  position: fixed;
+  right: 2rem;
+  top: 6rem;
+  z-index: 99;
 }
 /* content_part */
 .container .content_part {
@@ -501,6 +548,7 @@ select:focus {
   align-items: center;
   width: 100%;
 }
+
 .box .text_part h2 {
   font-size: 15px;
   text-align: center;
@@ -517,6 +565,12 @@ select:focus {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+}
+
+/* Delete marked actions */
+.delete_marked {
+  width: 100%;
+  padding-left: 0.2rem;
 }
 /* Todo Content */
 .todo_content,
@@ -542,7 +596,7 @@ select:focus {
 
 .todo_content .part_3,
 .project_content .part_3 {
-  max-height: 300px;
+  max-height: 50vh;
   width: 100%;
 }
 table {
@@ -552,10 +606,11 @@ table {
   text-align: center;
   width: 100%;
 }
-/* table thead th{
-    position: sticky;
-    top: 0;
-} */
+table thead {
+  position: sticky;
+  top: -1%;
+  z-index: 1;
+}
 table thead tr {
   background-color: var(--btn-theme);
   color: #ffffff;
@@ -597,7 +652,7 @@ table tbody tr:nth-of-type(even) {
 table tbody tr:nth-of-type(odd) {
   background-color: #c2c2c2;
 }
-.todo_content table.todo tbody td:nth-child(4) {
+.todo_content table.todo tbody td:nth-child(5) {
   text-align: left;
   min-width: 200px;
   font-size: 14px;
@@ -864,7 +919,7 @@ table.projects thead {
 
 /* Projects_Part */
 .project_content .part_3 {
-  max-height: 260px;
+  max-height: 50vh;
   overflow-y: auto;
   width: 100%;
 }
@@ -946,7 +1001,6 @@ table.projects thead {
     position: fixed;
     height: 100vh;
     left: 0;
-    width: 50%;
     overflow: auto;
     z-index: 2;
     box-shadow: 5px 5px 10px 100vw rgba(0, 0, 0, 0.3);
@@ -956,25 +1010,15 @@ table.projects thead {
     left: -50vw;
     box-shadow: 0px 0px;
   }
-  .sidebar .menu_part ul li a span,
-  .closed .menu_part ul li a span {
-    visibility: visible;
-    margin-left: 0.2rem;
-  }
-  .sidebar .menu_part ul li,
-  .closed .menu_part ul li {
-    padding: 0.8rem;
-    padding-left: 0;
-  }
+
   .sidebar .menu_part ul li a,
   .closed .menu_part ul li a {
-    padding: 0.8rem;
+    padding: 0.5rem;
   }
-  .sidebar .menu_part ul li a::after,
-  .closed .menu_part ul li a::after,
+
   .sidebar .menu_part ul li a.active::after,
   .closed .menu_part ul li a.active::after {
-    width: 175px;
+    width: 100%;
   }
   .sidebar .settings_part {
     margin: 0.2rem;
@@ -1012,10 +1056,7 @@ table.projects thead {
   .settings_content .grouping {
     width: 90%;
   }
-  .project_content .part_3 {
-    max-height: 300px;
-    width: 100%;
-  }
+
   .todo_content .todo_form input,
   .project_content .project_form input {
     width: 100%;
@@ -1028,6 +1069,9 @@ table.projects thead {
     gap: 5rem;
     width: 100%;
     height: 120px;
+  }
+  .box .text_part {
+    flex-basis: 80%;
   }
 
   td.actions {

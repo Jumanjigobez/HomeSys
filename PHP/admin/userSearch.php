@@ -14,8 +14,9 @@
         status like '%{$term}%' OR
         user_type like '%{$term}%' OR
         terms_agreed like '%{$term}%' OR
-        reg_date like '%{$term}%'
-    )
+        reg_date like '%{$term}%' 
+
+    ) ORDER BY reg_date DESC
 
     ");
     

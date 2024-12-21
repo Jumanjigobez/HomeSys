@@ -13,6 +13,10 @@ const Payments = () => {
   const [PaymentsData, setPaymentsData] = useState([]),
     [isDialogOpen, setIsDialogOpen] = useState(false),
     [dialogType, setDialogType] = useState(""),
+    [boxMarked, setBoxMarked] = useState(false),
+    [checkedFields, setCheckedFields] = useState({
+      Ids: [],
+    }),
     [dialogFields, setDialogFields] = useState({});
 
   const [PaymentsUpdate, setPaymentsUpdate] = useState({
@@ -101,12 +105,12 @@ const Payments = () => {
       setDialogFields({
         dialogTitle: "Edit",
         Id: fields[0].innerText,
-        TransCode: fields[2].innerText,
-        AccNo: fields[3].innerText,
-        AccName: fields[4].innerText,
-        Amount: fields[5].innerText,
-        Date: fields[6].innerText,
-        Type: fields[7].innerText,
+        TransCode: fields[3].innerText,
+        AccNo: fields[4].innerText,
+        AccName: fields[5].innerText,
+        Amount: fields[6].innerText,
+        Date: fields[7].innerText,
+        Type: fields[8].innerText,
       });
 
       setDialogType("edit");
@@ -114,11 +118,20 @@ const Payments = () => {
     } else if (type === "delete") {
       setDialogFields({
         dialogTitle: "Delete",
-        Id: fields[0].innerText,
-        TransCode: fields[2].innerText,
+        TransCode: fields[3].innerText,
+        Id: checkedFields.Ids,
       });
 
       setDialogType("delete");
+      setIsDialogOpen(true);
+    } else if (type === "delete marked") {
+      setDialogFields({
+        dialogTitle: "Delete Marked",
+
+        Id: checkedFields.Ids,
+      });
+
+      setDialogType("delete marked");
       setIsDialogOpen(true);
     }
   };
@@ -259,6 +272,118 @@ const Payments = () => {
     setIsDialogOpen(false);
   };
 
+  const handleDeleteMarkedPayments = (e, Ids) => {
+    e.preventDefault();
+
+    axios({
+      //Delete the task in the database
+      method: "get",
+      url: api_url + "/payments/deleteMarkedPayments.php",
+      params: { checkedIds: Ids },
+      withCredentials: false,
+    })
+      .then((response) => {
+        if (response.data == 1) {
+          toast.success("Deleted Successfully", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+
+          setBoxMarked(false);
+          setCheckedFields({ Ids: [] });
+
+          setPaymentsUpdate((prevState) => {
+            return {
+              ...prevState,
+              updated: prevState.updated + 1,
+            };
+          });
+        } else {
+          toast.error("Oops, Something's wrong :(", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+        }
+      })
+      .catch((e) => {
+        alert("Network Error", e);
+      });
+
+    setIsDialogOpen(false);
+  };
+
+  const handleCheckAll = (e) => {
+    let row = e.target.parentElement.parentElement.parentElement.parentElement,
+      fields = row.querySelectorAll("td"),
+      td_fields = fields;
+    if (e.target.checked == true) {
+      td_fields.forEach((td) => {
+        if (td.className == "mark_box_row") {
+          let checkbox = td.querySelector("input");
+          checkbox.checked = true;
+          setBoxMarked(true);
+
+          setCheckedFields((prevState) => {
+            return {
+              ...prevState,
+              Ids: [...prevState.Ids, checkbox.id],
+            };
+          });
+        }
+      });
+    } else {
+      td_fields.forEach((td) => {
+        if (td.className == "mark_box_row") {
+          let checkbox = td.querySelector("input");
+          checkbox.checked = false;
+          setBoxMarked(false);
+          setCheckedFields((prevState) => {
+            return {
+              ...prevState,
+              Ids: [],
+            };
+          });
+        }
+      });
+    }
+  };
+
+  const handleCheck = (e) => {
+    let row = e.target.parentElement.parentElement.parentElement.parentElement,
+      check_fields = row.querySelectorAll("input");
+
+    if (e.target.checked) {
+      setBoxMarked(true);
+      setCheckedFields((prevState) => {
+        return {
+          ...prevState,
+          Ids: [...prevState.Ids, e.target.id],
+        };
+      });
+    } else {
+      let countChecked = 0;
+      check_fields[0].checked = false; //uncheck the parent checkbox
+      check_fields.forEach((box) => {
+        if (box.checked) {
+          countChecked += 1;
+        }
+      });
+
+      if (countChecked == 0) {
+        check_fields[0].checked = false;
+        setBoxMarked(false);
+        setCheckedFields({ Ids: [] });
+      } else {
+        setCheckedFields((prevState) => {
+          return {
+            ...prevState,
+            Ids: prevState.Ids.filter((id) => id !== e.target.id),
+          };
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     //Axios to get data from server
 
@@ -283,13 +408,17 @@ const Payments = () => {
     Total_Sent = 0,
     Total_Received = 0;
 
-  PaymentsData.map((e) => (Total_Amount += Number(e.Amount)));
-  PaymentsData.map((e) =>
-    e.Type === "Sent"
-      ? (Total_Sent += Number(e.Amount))
-      : (Total_Received += Number(e.Amount))
-  );
+  if (Array.isArray(PaymentsData)) {
+    PaymentsData.map(
+      (e) => (Total_Amount += Number(e.Amount.replace(/,/g, "")))
+    );
 
+    PaymentsData.map((e) =>
+      e.Type === "Sent"
+        ? (Total_Sent += Number(e.Amount.replace(/,/g, "")))
+        : (Total_Received += Number(e.Amount.replace(/,/g, "")))
+    );
+  }
   return (
     <section id="active">
       <Sidebar />
@@ -331,11 +460,30 @@ const Payments = () => {
                 </form>
               </div>
 
+              {boxMarked && (
+                <div className="delete_marked">
+                  <button
+                    className="btn action_btn delete_btn"
+                    onClick={(e) => openDialogPayment("delete marked", e)}
+                  >
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </div>
+              )}
+
               <div className="part_3">
                 <table className="appoints">
                   <thead>
                     <tr>
                       <th className="id">#</th>
+                      <th className="mark_box">
+                        <input
+                          type="checkbox"
+                          name="mark_all"
+                          id="mark_all"
+                          onChange={(e) => handleCheckAll(e)}
+                        />
+                      </th>
                       <th>No.</th>
                       <th>Trans. Code</th>
                       <th>Acc. No.</th>
@@ -352,11 +500,24 @@ const Payments = () => {
                       PaymentsData.map((row) => (
                         <tr key={row.id}>
                           <td className="id">{row.id}</td>
+                          <td className="mark_box_row">
+                            <input
+                              type="checkbox"
+                              name="mark"
+                              id={row.id}
+                              onChange={(e) => handleCheck(e)}
+                            />
+                          </td>
                           <td>{count++}</td>
                           <td>{row.TransCode}</td>
                           <td>{row.AccNo}</td>
                           <td>{row.AccName}</td>
-                          <td>{Number(row.Amount).toLocaleString()}</td>
+                          <td>
+                            {Number(
+                              row.Amount.replace(/,/g, "")
+                            ).toLocaleString()}
+                          </td>
+
                           <td>{row.Date}</td>
                           <td>{row.Type}</td>
                           <td className="actions">
@@ -377,7 +538,7 @@ const Payments = () => {
                       ))
                     ) : (
                       <tr>
-                        <td className="not_found" colSpan={9}>
+                        <td className="not_found" colSpan={10}>
                           No Payments Found! Please Add Row
                         </td>
                       </tr>
@@ -632,6 +793,26 @@ const Payments = () => {
                         Add
                       </button>
                     </div>
+                  </div>
+                </form>
+              ) : dialogType === "delete marked" ? (
+                <form
+                  className="dialog_form"
+                  onSubmit={(e) =>
+                    handleDeleteMarkedPayments(e, dialogFields.Id)
+                  }
+                >
+                  <div className="input_group">
+                    <h3>
+                      Are you sure you want to delete the-{" "}
+                      <span style={{ color: "red" }}>marked Project</span>
+                    </h3>
+                  </div>
+
+                  <div className="input_group">
+                    <button className="btn" type="submit">
+                      Confirm
+                    </button>
                   </div>
                 </form>
               ) : (

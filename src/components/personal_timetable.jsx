@@ -22,6 +22,10 @@ const Personal_Timetable = () => {
     [dialogType, setDialogType] = useState(""),
     [dialogFields, setDialogFields] = useState({}),
     [error, setError] = useState(""),
+    [boxMarked, setBoxMarked] = useState(false),
+    [checkedFields, setCheckedFields] = useState({
+      Ids: [],
+    }),
     [isLoading, setIsLoading] = useState(true); //For loading screen when page is changed
 
   const Start_input = useRef(),
@@ -83,12 +87,12 @@ const Personal_Timetable = () => {
       setDialogFields({
         dialogTitle: "Edit",
         Id: fields[0].innerText,
-        Time: fields[1].innerText,
-        Mon: fields[2].innerText,
-        Tue: fields[3].innerText,
-        Wed: fields[4].innerText,
-        Thur: fields[5].innerText,
-        Fri: fields[6].innerText,
+        Time: fields[2].innerText,
+        Mon: fields[3].innerText,
+        Tue: fields[4].innerText,
+        Wed: fields[5].innerText,
+        Thur: fields[6].innerText,
+        Fri: fields[7].innerText,
       });
 
       setDialogType("edit");
@@ -98,10 +102,20 @@ const Personal_Timetable = () => {
       setDialogFields({
         dialogTitle: "Delete",
         Id: fields[0].innerText,
-        Time: fields[1].innerText,
+        Time: fields[2].innerText,
       });
 
       setDialogType("delete");
+      setIsDialogOpen(true);
+      setError("");
+    } else if (x === "delete marked") {
+      setDialogFields({
+        dialogTitle: "Delete Marked",
+
+        Id: checkedFields.Ids,
+      });
+
+      setDialogType("delete marked");
       setIsDialogOpen(true);
       setError("");
     }
@@ -251,6 +265,117 @@ const Personal_Timetable = () => {
     setIsDialogOpen(false);
   };
 
+  const handleDeleteMarkedPersonalT = (e, Ids) => {
+    e.preventDefault();
+
+    axios({
+      //Delete the task in the database
+      method: "get",
+      url: api_url + "/personalTimetable/deleteMarkedPersonalTimetable.php",
+      params: { checkedIds: Ids },
+      withCredentials: false,
+    })
+      .then((response) => {
+        if (response.data == 1) {
+          toast.success("Deleted Successfully", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+
+          setBoxMarked(false);
+          setCheckedFields({ Ids: [] });
+
+          setTimetableUpdate((prevState) => {
+            return {
+              ...prevState,
+              updated: prevState.updated + 1,
+            };
+          });
+        } else {
+          toast.error("Oops, Something's wrong :(", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+        }
+      })
+      .catch((e) => {
+        alert("Network Error", e);
+      });
+
+    setIsDialogOpen(false);
+  };
+
+  const handleCheckAll = (e) => {
+    let row = e.target.parentElement.parentElement.parentElement.parentElement,
+      fields = row.querySelectorAll("td"),
+      td_fields = fields;
+    if (e.target.checked == true) {
+      td_fields.forEach((td) => {
+        if (td.className == "mark_box_row") {
+          let checkbox = td.querySelector("input");
+          checkbox.checked = true;
+          setBoxMarked(true);
+
+          setCheckedFields((prevState) => {
+            return {
+              ...prevState,
+              Ids: [...prevState.Ids, checkbox.id],
+            };
+          });
+        }
+      });
+    } else {
+      td_fields.forEach((td) => {
+        if (td.className == "mark_box_row") {
+          let checkbox = td.querySelector("input");
+          checkbox.checked = false;
+          setBoxMarked(false);
+          setCheckedFields((prevState) => {
+            return {
+              ...prevState,
+              Ids: [],
+            };
+          });
+        }
+      });
+    }
+  };
+
+  const handleCheck = (e) => {
+    let row = e.target.parentElement.parentElement.parentElement.parentElement,
+      check_fields = row.querySelectorAll("input");
+
+    if (e.target.checked) {
+      setBoxMarked(true);
+      setCheckedFields((prevState) => {
+        return {
+          ...prevState,
+          Ids: [...prevState.Ids, e.target.id],
+        };
+      });
+    } else {
+      let countChecked = 0;
+      check_fields[0].checked = false; //uncheck the parent checkbox
+      check_fields.forEach((box) => {
+        if (box.checked) {
+          countChecked += 1;
+        }
+      });
+
+      if (countChecked == 0) {
+        check_fields[0].checked = false;
+        setBoxMarked(false);
+        setCheckedFields({ Ids: [] });
+      } else {
+        setCheckedFields((prevState) => {
+          return {
+            ...prevState,
+            Ids: prevState.Ids.filter((id) => id !== e.target.id),
+          };
+        });
+      }
+    }
+  };
   useEffect(() => {
     //Axios to get todo data
 
@@ -301,11 +426,29 @@ const Personal_Timetable = () => {
                   </div>
                 </div>
 
+                {boxMarked && (
+                  <div className="delete_marked">
+                    <button
+                      className="btn action_btn delete_btn"
+                      onClick={(e) => openDialogPersonalT("delete marked", e)}
+                    >
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                )}
                 <div className="table_part">
                   <table>
                     <thead>
                       <tr>
                         <th className="id">#</th>
+                        <th className="mark_box">
+                          <input
+                            type="checkbox"
+                            name="mark_all"
+                            id="mark_all"
+                            onChange={(e) => handleCheckAll(e)}
+                          />
+                        </th>
                         <th>Time</th>
                         <th>MON</th>
                         <th>TUE</th>
@@ -321,6 +464,14 @@ const Personal_Timetable = () => {
                         timetableData.map((row) => (
                           <tr key={row.id}>
                             <td className="id">{row.id}</td>
+                            <td className="mark_box_row">
+                              <input
+                                type="checkbox"
+                                name="mark"
+                                id={row.id}
+                                onChange={(e) => handleCheck(e)}
+                              />
+                            </td>
                             <td>
                               {row.Start}
                               {row.SPeriod} - {row.End}
@@ -351,7 +502,7 @@ const Personal_Timetable = () => {
                         ))
                       ) : (
                         <tr>
-                          <td className="not_found" colSpan={8}>
+                          <td className="not_found" colSpan={9}>
                             Timetable is Empty! Please Add Row
                           </td>
                         </tr>
@@ -665,6 +816,26 @@ const Personal_Timetable = () => {
                         Add
                       </button>
                     </div>
+                  </div>
+                </form>
+              ) : dialogType === "delete marked" ? (
+                <form
+                  className="dialog_form"
+                  onSubmit={(e) =>
+                    handleDeleteMarkedPersonalT(e, dialogFields.Id)
+                  }
+                >
+                  <div className="input_group">
+                    <h3>
+                      Are you sure you want to delete the-{" "}
+                      <span style={{ color: "red" }}>marked task</span>
+                    </h3>
+                  </div>
+
+                  <div className="input_group">
+                    <button className="btn" type="submit">
+                      Confirm
+                    </button>
                   </div>
                 </form>
               ) : (

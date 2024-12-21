@@ -12,6 +12,10 @@ const UserManagement = () => {
     [isDialogOpen, setIsDialogOpen] = useState(false),
     [dialogType, setDialogType] = useState(""),
     [dialogFields, setDialogFields] = useState({}),
+    [boxMarked, setBoxMarked] = useState(false),
+    [checkedFields, setCheckedFields] = useState({
+      Ids: [],
+    }),
     [usersUpdate, setUsersUpdate] = useState({
       updated: 0,
     }),
@@ -96,12 +100,12 @@ const UserManagement = () => {
     if (type === "edit") {
       setDialogFields({
         dialogTitle: "Edit",
-        UserId: fields[1].innerText,
-        Username: fields[2].innerText,
-        Email: fields[3].innerText,
-        Psk: fields[4].innerText,
-        Status: fields[5].innerText,
-        UserType: fields[6].innerText,
+        UserId: fields[2].innerText,
+        Username: fields[3].innerText,
+        Email: fields[4].innerText,
+        Psk: fields[5].innerText,
+        Status: fields[6].innerText,
+        UserType: fields[7].innerText,
         TermsAgreed: fields[7].innerText,
       });
 
@@ -110,11 +114,20 @@ const UserManagement = () => {
     } else if (type === "delete") {
       setDialogFields({
         dialogTitle: "Delete",
-        UserId: fields[1].innerText,
-        Username: fields[2].innerText,
+        UserId: fields[2].innerText,
+        Username: fields[3].innerText,
       });
 
       setDialogType("delete");
+      setIsDialogOpen(true);
+    } else if (type === "delete marked") {
+      setDialogFields({
+        dialogTitle: "Delete Marked",
+
+        UserId: checkedFields.Ids,
+      });
+
+      setDialogType("delete marked");
       setIsDialogOpen(true);
     }
   };
@@ -254,6 +267,118 @@ const UserManagement = () => {
 
     setIsDialogOpen(false);
   };
+
+  const handleDeleteMarkedUsers = (e, Ids) => {
+    e.preventDefault();
+
+    axios({
+      //Delete the task in the database
+      method: "get",
+      url: api_url + "/admin/deleteMarkedUsers.php",
+      params: { checkedIds: Ids },
+      withCredentials: false,
+    })
+      .then((response) => {
+        if (response.data == 1) {
+          toast.success("Deleted Successfully", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+
+          setBoxMarked(false);
+          setCheckedFields({ Ids: [] });
+
+          setUsersUpdate((prevState) => {
+            return {
+              ...prevState,
+              updated: prevState.updated + 1,
+            };
+          });
+        } else {
+          toast.error("Oops, Something's wrong :(", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 1000,
+          });
+        }
+      })
+      .catch((e) => {
+        alert("Network Error", e);
+      });
+
+    setIsDialogOpen(false);
+  };
+
+  const handleCheckAll = (e) => {
+    let row = e.target.parentElement.parentElement.parentElement.parentElement,
+      fields = row.querySelectorAll("td"),
+      td_fields = fields;
+    if (e.target.checked == true) {
+      td_fields.forEach((td) => {
+        if (td.className == "mark_box_row") {
+          let checkbox = td.querySelector("input");
+          checkbox.checked = true;
+          setBoxMarked(true);
+
+          setCheckedFields((prevState) => {
+            return {
+              ...prevState,
+              Ids: [...prevState.Ids, checkbox.id],
+            };
+          });
+        }
+      });
+    } else {
+      td_fields.forEach((td) => {
+        if (td.className == "mark_box_row") {
+          let checkbox = td.querySelector("input");
+          checkbox.checked = false;
+          setBoxMarked(false);
+          setCheckedFields((prevState) => {
+            return {
+              ...prevState,
+              Ids: [],
+            };
+          });
+        }
+      });
+    }
+  };
+
+  const handleCheck = (e) => {
+    let row = e.target.parentElement.parentElement.parentElement.parentElement,
+      check_fields = row.querySelectorAll("input");
+
+    if (e.target.checked) {
+      setBoxMarked(true);
+      setCheckedFields((prevState) => {
+        return {
+          ...prevState,
+          Ids: [...prevState.Ids, e.target.id],
+        };
+      });
+    } else {
+      let countChecked = 0;
+      check_fields[0].checked = false; //uncheck the parent checkbox
+      check_fields.forEach((box) => {
+        if (box.checked) {
+          countChecked += 1;
+        }
+      });
+
+      if (countChecked == 0) {
+        check_fields[0].checked = false;
+        setBoxMarked(false);
+        setCheckedFields({ Ids: [] });
+      } else {
+        setCheckedFields((prevState) => {
+          return {
+            ...prevState,
+            Ids: prevState.Ids.filter((id) => id !== e.target.id),
+          };
+        });
+      }
+    }
+  };
   useEffect(() => {
     //Axios to get data from server
 
@@ -317,10 +442,29 @@ const UserManagement = () => {
                 </form>
               </div>
 
+              {boxMarked && (
+                <div className="delete_marked">
+                  <button
+                    className="btn action_btn delete_btn"
+                    onClick={(e) => openDialogUsers("delete marked", e)}
+                  >
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </div>
+              )}
+
               <div className="part_3">
                 <table className="appoints">
                   <thead>
                     <tr>
+                      <th className="mark_box">
+                        <input
+                          type="checkbox"
+                          name="mark_all"
+                          id="mark_all"
+                          onChange={(e) => handleCheckAll(e)}
+                        />
+                      </th>
                       <th>No.</th>
                       <th>User Id</th>
                       <th>Username</th>
@@ -339,11 +483,19 @@ const UserManagement = () => {
                     {usersData.length != 0 ? (
                       usersData.map((row) => (
                         <tr key={row.user_id}>
+                          <td className="mark_box_row">
+                            <input
+                              type="checkbox"
+                              name="mark"
+                              id={row.user_id}
+                              onChange={(e) => handleCheck(e)}
+                            />
+                          </td>
                           <td>{count++}</td>
                           <td>{row.user_id}</td>
                           <td>{row.username}</td>
                           <td>{row.email}</td>
-                          <td>{row.psk}</td>
+                          <td>****</td>
                           <td>{row.status}</td>
                           <td>{row.user_type}</td>
                           <td>{row.terms_agreed}</td>
@@ -366,7 +518,7 @@ const UserManagement = () => {
                       ))
                     ) : (
                       <tr>
-                        <td className="not_found" colSpan={10}>
+                        <td className="not_found" colSpan={11}>
                           Ooops! No User Found. Please Add Row
                         </td>
                       </tr>
@@ -653,6 +805,26 @@ const UserManagement = () => {
                         Add
                       </button>
                     </div>
+                  </div>
+                </form>
+              ) : dialogType === "delete marked" ? (
+                <form
+                  className="dialog_form"
+                  onSubmit={(e) =>
+                    handleDeleteMarkedUsers(e, dialogFields.UserId)
+                  }
+                >
+                  <div className="input_group">
+                    <h3>
+                      Are you sure you want to delete the-{" "}
+                      <span style={{ color: "red" }}>marked Users</span>
+                    </h3>
+                  </div>
+
+                  <div className="input_group">
+                    <button className="btn" type="submit">
+                      Confirm
+                    </button>
                   </div>
                 </form>
               ) : (
